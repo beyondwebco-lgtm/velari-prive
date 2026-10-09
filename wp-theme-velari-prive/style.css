@@ -1,0 +1,17 @@
+/*
+Theme Name: VELARI PRIVÉ — Digital Flagship
+Theme URI: https://velariprive.au/
+Author: Beyond Webco
+Author URI: https://beyondweb.co/
+Description: Ultra-luxury, lightweight, high-performance digital flagship theme for ANAGÈNESE by VELARI PRIVÉ. Zero page builder bloat, optimized for Hostinger WordPress hosting.
+Version: 1.0.0
+License: Proprietary / Velari Privé
+Text Domain: velari-prive
+Tags: luxury, beauty, dermaceutical, minimal, editorial, mobile-first
+*/
+
+@import url('./assets/css/tokens.css');
+@import url('./assets/css/base.css');
+@import url('./assets/css/layout.css');
+@import url('./assets/css/components.css');
+@import url('./assets/css/sections.css');

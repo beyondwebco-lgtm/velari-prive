@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" fill="none">
+  <circle cx="80" cy="80" r="76" stroke="#3F3F46" stroke-width="1"/>
+  <circle cx="80" cy="80" r="70" stroke="#71717A" stroke-width="0.75" stroke-dasharray="3 3"/>
+  <path id="curve" d="M 24,80 A 56,56 0 1,1 136,80 A 56,56 0 1,1 24,80" fill="none"/>
+  <text font-family="'Cinzel', 'Cormorant Garamond', serif" font-size="8.5" letter-spacing="0.25em" fill="#A1A1AA">
+    <textPath href="#curve" startOffset="50%" text-anchor="middle">
+      VELARI PRIVÉ • DERMACEUTICAL RIGOUR •
+    </textPath>
+  </text>
+  <circle cx="80" cy="80" r="32" stroke="#27272A" fill="#0E0E11"/>
+  <text x="80" y="85" text-anchor="middle" font-family="'Cinzel', 'Cormorant Garamond', serif" font-size="14" fill="#F4F4F5" letter-spacing="0.1em">36</text>
+  <text x="80" y="97" text-anchor="middle" font-family="'Inter', sans-serif" font-size="5" fill="#71717A" letter-spacing="0.3em">AUS BIOTECH</text>
+</svg>
