@@ -45,9 +45,9 @@ $theme_uri = get_template_directory_uri();
             playsinline 
             preload="auto"
             poster="<?php echo esc_url($theme_uri . '/assets/images/anagenese-hero-bottle.jpg'); ?>"
-            aria-label="ANAGÈNESE 360° rotating obsidian glass elixir bottle with brushed silver pipette"
+            aria-label="ANAGÈNESE luxury elixir film featuring obsidian glass bottle and brushed silver pipette"
           >
-            <source src="<?php echo esc_url($theme_uri . '/assets/videos/anagenese-360-rotation.mp4'); ?>" type="video/mp4">
+            <source src="<?php echo esc_url($theme_uri . '/assets/videos/anagenese-hero.mp4'); ?>" type="video/mp4">
             <img 
               src="<?php echo esc_url($theme_uri . '/assets/images/anagenese-hero-bottle.jpg'); ?>" 
               alt="ANAGÈNESE by VELARI PRIVÉ obsidian glass bottle with brushed silver dropper cap" 
