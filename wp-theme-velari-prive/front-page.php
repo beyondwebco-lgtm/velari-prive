@@ -10,40 +10,61 @@ $theme_uri = get_template_directory_uri();
 ?>
 
 <main id="main-content">
-  <!-- SECTION 01 & 02: HERO OPENING & HERO PRODUCT REVEAL -->
-  <section class="section-hero hero-wrapper" id="anagenese">
+  <!-- SECTION 01 & 02: HERO OPENING & 360° PRODUCT FILM -->
+  <section class="section-hero hero-wrapper" id="anagenese" aria-label="VELARI PRIVÉ ANAGÈNESE Editorial Hero">
     <div class="hero-ambient-glow"></div>
     
-    <div class="container hero-content">
-      <span class="hero-tagline">ANAGÈNESE • THE REGENERATING ELIXIR</span>
-      <h1 class="hero-title">ANAGÈNESE</h1>
-      <p class="hero-subtitle">The Regenerating Elixir</p>
-      <p class="hero-editorial-copy">
-        A considered ritual for hair and scalp. An intelligent synthesis of Australian-led botanical formulation vision and precise cleanroom dermaceutical craft.
-      </p>
+    <div class="container hero-editorial-grid">
+      <!-- Left Column: Editorial Typography & Copy (45%) -->
+      <div class="hero-editorial-column">
+        <span class="hero-eyebrow">VELARI PRIVÉ · THE FLAGSHIP</span>
+        <h1 class="hero-title">ANAGÈNESE</h1>
+        <p class="hero-headline">The Art of Scalp Care.</p>
+        <p class="hero-body">
+          A considered daily ritual. A refined approach to scalp and hair care, shaped by formulation intent and quiet precision.
+        </p>
 
-      <div class="hero-actions">
-        <a href="#ritual-preview" class="btn btn-primary" data-track-discovery>
-          Discover ANAGÈNESE
-        </a>
-        <button type="button" class="btn btn-secondary" data-trigger-science-modal>
-          Explore the Science
-        </button>
+        <div class="hero-cta-group">
+          <a href="#craft-object" class="hero-primary-cta" data-track-discovery>
+            DISCOVER THE ELIXIR
+          </a>
+          <a href="<?php echo esc_url(home_url('/the-house/')); ?>" class="hero-secondary-link">
+            THE VELARI PRIVÉ ETHOS &rarr;
+          </a>
+        </div>
       </div>
 
-      <div class="hero-visual-stage">
-        <div class="hero-bottle-frame">
+      <!-- Right Column: Product Film (55%) -->
+      <div class="hero-film-column">
+        <div class="hero-film-container">
+          <video 
+            class="hero-film-video"
+            autoplay 
+            muted 
+            loop 
+            playsinline 
+            preload="auto"
+            poster="<?php echo esc_url($theme_uri . '/assets/images/anagenese-hero-bottle.jpg'); ?>"
+            aria-label="ANAGÈNESE 360° rotating obsidian glass elixir bottle with brushed silver pipette"
+          >
+            <source src="<?php echo esc_url($theme_uri . '/assets/videos/anagenese-360-rotation.mp4'); ?>" type="video/mp4">
+            <img 
+              src="<?php echo esc_url($theme_uri . '/assets/images/anagenese-hero-bottle.jpg'); ?>" 
+              alt="ANAGÈNESE by VELARI PRIVÉ obsidian glass bottle with brushed silver dropper cap" 
+              class="hero-film-fallback"
+              width="1200"
+              height="896"
+            >
+          </video>
           <img 
             src="<?php echo esc_url($theme_uri . '/assets/images/anagenese-hero-bottle.jpg'); ?>" 
             alt="ANAGÈNESE by VELARI PRIVÉ obsidian glass bottle with brushed silver dropper cap" 
-            class="hero-bottle-img"
-            width="680"
-            height="510"
-            fetchpriority="high"
+            class="hero-film-fallback-layer" 
+            aria-hidden="true"
+            loading="lazy"
+            width="1200"
+            height="896"
           >
-          <div class="hero-spec-tag">
-            50ml / 1.7 fl. oz. • Obsidian Glass
-          </div>
         </div>
       </div>
     </div>

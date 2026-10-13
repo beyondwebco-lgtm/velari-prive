@@ -254,5 +254,30 @@
         });
       });
     });
+
+    // 8. 360° HERO FILM AUTOPLAY & GRACEFUL FALLBACK
+    const heroFilmVideo = document.querySelector('.hero-film-video');
+    const heroFallbackLayer = document.querySelector('.hero-film-fallback-layer');
+    if (heroFilmVideo) {
+      const startAutoplay = function () {
+        const promise = heroFilmVideo.play();
+        if (promise !== undefined) {
+          promise.catch(function () {
+            // If browser blocks autoplay, activate graceful fallback image layer
+            if (heroFallbackLayer) heroFallbackLayer.classList.add('visible');
+          });
+        }
+      };
+
+      heroFilmVideo.addEventListener('error', function () {
+        if (heroFallbackLayer) heroFallbackLayer.classList.add('visible');
+      });
+
+      heroFilmVideo.addEventListener('playing', function () {
+        if (heroFallbackLayer) heroFallbackLayer.classList.remove('visible');
+      });
+
+      startAutoplay();
+    }
   });
 })();
