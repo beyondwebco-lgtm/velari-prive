@@ -279,5 +279,161 @@
 
       startAutoplay();
     }
+
+    // 9. CINEMATIC FULL-SCREEN VIDEO HERO WITH SCROLL-DRIVEN SHRINK TRANSITION
+    function initHeroScrollCinematic() {
+      const track = document.querySelector('.hero-scroll-track');
+      const stage = document.querySelector('.hero-sticky-stage');
+      const frame = document.querySelector('.hero-cinematic-frame');
+      const target = document.querySelector('.hero-film-target');
+      const cue = document.querySelector('.hero-scroll-cue');
+
+      if (!track || !stage || !frame || !target) return;
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (prefersReducedMotion.matches) {
+        document.documentElement.classList.add('hero-reduced-motion');
+        return;
+      }
+
+      document.documentElement.classList.add('hero-scroll-enabled');
+
+      // Staggered threshold configurations for editorial typography
+      const textElements = [
+        { el: stage.querySelector('.hero-eyebrow'), start: 0.15, end: 0.52 },
+        { el: stage.querySelector('.hero-title'), start: 0.22, end: 0.60 },
+        { el: stage.querySelector('.hero-headline'), start: 0.28, end: 0.68 },
+        { el: stage.querySelector('.hero-body'), start: 0.36, end: 0.76 },
+        { el: stage.querySelector('.hero-cta-group'), start: 0.44, end: 0.84 }
+      ].filter(item => item.el !== null);
+
+      let stageRect = { left: 0, top: 0, width: window.innerWidth, height: window.innerHeight };
+      let targetX = 0;
+      let targetY = 0;
+      let targetW = 0;
+      let targetH = 0;
+      let maxScroll = 1;
+      let isTicking = false;
+
+      function measure() {
+        const sRect = stage.getBoundingClientRect();
+        const tRect = target.getBoundingClientRect();
+
+        stageRect = {
+          left: sRect.left,
+          top: sRect.top,
+          width: stage.offsetWidth || window.innerWidth,
+          height: stage.offsetHeight || window.innerHeight
+        };
+
+        targetX = tRect.left - sRect.left;
+        targetY = tRect.top - sRect.top;
+        targetW = tRect.width;
+        targetH = tRect.height;
+
+        maxScroll = Math.max(1, track.offsetHeight - window.innerHeight);
+      }
+
+      function smoothstep(min, max, value) {
+        const x = Math.max(0, Math.min(1, (value - min) / (max - min)));
+        return x * x * (3 - 2 * x);
+      }
+
+      function easeInOutCubic(x) {
+        return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+      }
+
+      let lastAppliedT = -1;
+
+      function applyFrameTransform(t) {
+        const easedT = easeInOutCubic(t);
+
+        const curX = targetX * easedT;
+        const curY = targetY * easedT;
+        const curW = stageRect.width + (targetW - stageRect.width) * easedT;
+        const curH = stageRect.height + (targetH - stageRect.height) * easedT;
+        const curRadius = 4 * easedT;
+        const curShadowAlpha = 0.45 * easedT;
+        const curBorderAlpha = 0.12 * easedT;
+
+        frame.style.transform = `translate3d(${curX.toFixed(2)}px, ${curY.toFixed(2)}px, 0)`;
+        frame.style.width = `${curW.toFixed(2)}px`;
+        frame.style.height = `${curH.toFixed(2)}px`;
+        frame.style.borderRadius = `${curRadius.toFixed(2)}px`;
+        frame.style.boxShadow = curShadowAlpha > 0.01 
+          ? `0 24px 60px -12px rgba(0, 0, 0, ${curShadowAlpha.toFixed(3)})` 
+          : 'none';
+        frame.style.borderColor = curBorderAlpha > 0.01 
+          ? `rgba(242, 239, 233, ${curBorderAlpha.toFixed(3)})` 
+          : 'transparent';
+
+        textElements.forEach(item => {
+          const itemProgress = smoothstep(item.start, item.end, t);
+          const translateY = (1 - itemProgress) * 16;
+          item.el.style.opacity = itemProgress.toFixed(3);
+          item.el.style.transform = `translateY(${translateY.toFixed(2)}px)`;
+        });
+      }
+
+      function update() {
+        const scrollY = window.scrollY || window.pageYOffset || 0;
+        const progress = Math.max(0, Math.min(1, scrollY / maxScroll));
+
+        // Milestones:
+        // 0% -> 20%: Full-screen video hold (t = 0)
+        // 20% -> 60%: Smooth shrink transition to 45-50% width on right (t: 0 -> 1)
+        // 60% -> 100%: Holds final split hero layout
+        let t = 0;
+        if (progress <= 0.20) {
+          t = 0;
+        } else if (progress >= 0.60) {
+          t = 1;
+        } else {
+          t = (progress - 0.20) / (0.60 - 0.20);
+        }
+
+        if (Math.abs(t - lastAppliedT) > 0.0005 || lastAppliedT === -1) {
+          applyFrameTransform(t);
+          lastAppliedT = t;
+        }
+
+        if (cue) {
+          const cueAlpha = Math.max(0, 1 - (progress / 0.12));
+          cue.style.opacity = cueAlpha.toFixed(3);
+          cue.style.pointerEvents = cueAlpha <= 0.01 ? 'none' : 'auto';
+        }
+
+        isTicking = false;
+      }
+
+      function onScroll() {
+        if (!isTicking) {
+          isTicking = true;
+          requestAnimationFrame(update);
+        }
+      }
+
+      function onResize() {
+        measure();
+        lastAppliedT = -1;
+        update();
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onResize, { passive: true });
+      window.addEventListener('orientationchange', onResize, { passive: true });
+
+      measure();
+      update();
+
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => {
+          measure();
+          update();
+        });
+      }
+    }
+
+    initHeroScrollCinematic();
   });
 })();

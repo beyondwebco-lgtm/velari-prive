@@ -5,12 +5,28 @@
 
 /* --------------------------------------------------------------------------
    SECTION 01 & 02: HERO OPENING & 360° PRODUCT FILM
-   Haute Parfumerie & Dermaceutique Editorial Art Direction
+   Cinematic Full-Screen Video Hero with Scroll-Driven Shrink Transition
    ========================================================================== */
+.hero-scroll-track {
+  position: relative;
+  width: 100%;
+  height: 230vh;
+  background-color: #060608;
+  box-sizing: border-box;
+}
+
 .hero-wrapper {
   position: relative;
-  min-height: 100vh;
-  min-height: 100dvh;
+}
+
+/* Pinned Full-Viewport Stage */
+.hero-sticky-stage {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -38,7 +54,7 @@
 /* Two-Column Editorial Grid (45% Copy / 55% Product Film) */
 .hero-editorial-grid {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   display: grid;
   grid-template-columns: minmax(0, 45%) minmax(0, 55%);
   align-items: center;
@@ -46,6 +62,7 @@
   width: 100%;
   max-width: var(--container-max);
   margin: 0 auto;
+  pointer-events: none;
 }
 
 /* Left Column: Editorial Typography & Copy */
@@ -56,6 +73,7 @@
   align-items: flex-start;
   text-align: left;
   padding: clamp(1rem, 2vh, 2rem) 0;
+  pointer-events: auto;
 }
 
 /* Editorial Eyebrow */
@@ -176,7 +194,7 @@
   transform: translateX(3px);
 }
 
-/* Right Column: Dominant 360° Product Film */
+/* Right Column: Layout Slot for Product Film Target */
 .hero-film-column {
   position: relative;
   display: flex;
@@ -186,6 +204,15 @@
   height: 100%;
 }
 
+.hero-film-target {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Legacy container compatibility if used */
 .hero-film-container {
   position: relative;
   width: 100%;
@@ -200,11 +227,30 @@
   overflow: hidden;
 }
 
+/* Dominant Cinematic Film Frame (Scroll-driven from Fullscreen to Right Column) */
+.hero-cinematic-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  overflow: hidden;
+  background-color: #060608;
+  border-radius: 0;
+  border: 1px solid transparent;
+  box-shadow: none;
+  transform-origin: top left;
+  will-change: transform, width, height, border-radius;
+  pointer-events: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
 /* Seamless Film Video */
 .hero-film-video {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   display: block;
   background: transparent;
@@ -216,7 +262,7 @@
 .hero-film-fallback {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   display: block;
 }
 
@@ -225,7 +271,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   pointer-events: none;
   opacity: 0;
@@ -237,7 +283,61 @@
   opacity: 1;
 }
 
-/* Restrained Entry Animations */
+/* Subtle Scroll Cue */
+.hero-scroll-cue {
+  position: absolute;
+  bottom: clamp(1.5rem, 3.5vh, 2.8rem);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+  z-index: 5;
+  pointer-events: auto;
+  transition: opacity 0.3s ease;
+}
+
+.hero-scroll-cue-text {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--color-silver-muted);
+  white-space: nowrap;
+}
+
+.hero-scroll-cue-indicator {
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(to bottom, rgba(220, 220, 235, 0.45), rgba(220, 220, 235, 0));
+  animation: heroCuePulse 2.2s ease-in-out infinite;
+}
+
+@keyframes heroCuePulse {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scaleY(0.75);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scaleY(1);
+  }
+}
+
+/* When Scroll Controller is active, typography is strictly scroll-driven */
+.hero-scroll-enabled .hero-eyebrow,
+.hero-scroll-enabled .hero-title,
+.hero-scroll-enabled .hero-headline,
+.hero-scroll-enabled .hero-body,
+.hero-scroll-enabled .hero-cta-group {
+  animation: none !important;
+  opacity: 0;
+  transform: translateY(16px);
+  will-change: opacity, transform;
+}
+
+/* Restrained Entry Animations (fallback when scroll is not enabled) */
 @keyframes heroEditorialFade {
   from {
     opacity: 0;
@@ -275,15 +375,18 @@
 }
 
 @media (max-width: 820px) {
-  .hero-wrapper {
-    min-height: auto;
-    padding-top: calc(var(--header-height) + 2rem);
-    padding-bottom: 4rem;
+  .hero-scroll-track {
+    height: 200vh;
+  }
+
+  .hero-sticky-stage {
+    padding-top: calc(var(--header-height) + 1.5rem);
+    padding-bottom: 2.5rem;
   }
 
   .hero-editorial-grid {
     grid-template-columns: 1fr;
-    gap: 2.5rem;
+    gap: 1.8rem;
     text-align: center;
   }
 
@@ -296,12 +399,17 @@
 
   .hero-film-column {
     order: 2;
-    max-width: 580px;
+    max-width: 540px;
+    width: 100%;
     margin: 0 auto;
   }
 
+  .hero-film-target {
+    aspect-ratio: 16 / 9;
+  }
+
   .hero-body {
-    max-width: 500px;
+    max-width: 480px;
     margin-left: auto;
     margin-right: auto;
   }
@@ -312,7 +420,11 @@
 }
 
 @media (max-width: 480px) {
-  .hero-film-container {
+  .hero-scroll-track {
+    height: 180vh;
+  }
+
+  .hero-film-target {
     aspect-ratio: 16 / 10;
   }
 
@@ -326,9 +438,40 @@
   .hero-secondary-link {
     width: auto;
   }
+
+  .hero-scroll-cue {
+    bottom: 1.2rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hero-scroll-track {
+    height: auto !important;
+  }
+
+  .hero-sticky-stage {
+    position: relative !important;
+    height: auto !important;
+    min-height: 100vh !important;
+  }
+
+  .hero-cinematic-frame {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9 !important;
+    transform: none !important;
+    border-radius: 4px !important;
+  }
+
+  .hero-film-target {
+    display: none !important;
+  }
+
+  .hero-scroll-cue {
+    display: none !important;
+  }
+
   .hero-eyebrow,
   .hero-title,
   .hero-headline,

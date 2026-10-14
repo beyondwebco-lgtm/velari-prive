@@ -11,61 +11,72 @@ $theme_uri = get_template_directory_uri();
 
 <main id="main-content">
   <!-- SECTION 01 & 02: HERO OPENING & 360° PRODUCT FILM -->
-  <section class="section-hero hero-wrapper" id="anagenese" aria-label="VELARI PRIVÉ ANAGÈNESE Editorial Hero">
-    <div class="hero-ambient-glow"></div>
-    
-    <div class="container hero-editorial-grid">
-      <!-- Left Column: Editorial Typography & Copy (45%) -->
-      <div class="hero-editorial-column">
-        <span class="hero-eyebrow">VELARI PRIVÉ · THE FLAGSHIP</span>
-        <h1 class="hero-title">ANAGÈNESE</h1>
-        <p class="hero-headline">The Art of Scalp Care.</p>
-        <p class="hero-body">
-          A considered daily ritual. A refined approach to scalp and hair care, shaped by formulation intent and quiet precision.
-        </p>
+  <section class="section-hero hero-scroll-track hero-wrapper" id="anagenese" aria-label="VELARI PRIVÉ ANAGÈNESE Editorial Hero">
+    <div class="hero-sticky-stage">
+      <div class="hero-ambient-glow"></div>
+      
+      <div class="container hero-editorial-grid">
+        <!-- Left Column: Editorial Typography & Copy (45%) -->
+        <div class="hero-editorial-column">
+          <span class="hero-eyebrow">VELARI PRIVÉ · THE FLAGSHIP</span>
+          <h1 class="hero-title">ANAGÈNESE</h1>
+          <p class="hero-headline">The Art of Scalp Care.</p>
+          <p class="hero-body">
+            A considered daily ritual. A refined approach to scalp and hair care, shaped by formulation intent and quiet precision.
+          </p>
 
-        <div class="hero-cta-group">
-          <a href="#craft-object" class="hero-primary-cta" data-track-discovery>
-            DISCOVER THE ELIXIR
-          </a>
-          <a href="<?php echo esc_url(home_url('/the-house/')); ?>" class="hero-secondary-link">
-            THE VELARI PRIVÉ ETHOS &rarr;
-          </a>
+          <div class="hero-cta-group">
+            <a href="#craft-object" class="hero-primary-cta" data-track-discovery>
+              DISCOVER THE ELIXIR
+            </a>
+            <a href="<?php echo esc_url(home_url('/the-house/')); ?>" class="hero-secondary-link">
+              THE VELARI PRIVÉ ETHOS &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Column: Target Anchor Slot (55%) -->
+        <div class="hero-film-column">
+          <div class="hero-film-target" aria-hidden="true"></div>
         </div>
       </div>
 
-      <!-- Right Column: Product Film (55%) -->
-      <div class="hero-film-column">
-        <div class="hero-film-container">
-          <video 
-            class="hero-film-video"
-            autoplay 
-            muted 
-            loop 
-            playsinline 
-            preload="auto"
-            poster="<?php echo esc_url($theme_uri . '/assets/images/anagenese-hero-bottle.jpg'); ?>"
-            aria-label="ANAGÈNESE luxury elixir film featuring obsidian glass bottle and brushed silver pipette"
-          >
-            <source src="<?php echo esc_url($theme_uri . '/assets/videos/anagenese-hero.mp4'); ?>" type="video/mp4">
-            <img 
-              src="<?php echo esc_url($theme_uri . '/assets/images/anagenese-hero-bottle.jpg'); ?>" 
-              alt="ANAGÈNESE by VELARI PRIVÉ obsidian glass bottle with brushed silver dropper cap" 
-              class="hero-film-fallback"
-              width="1200"
-              height="896"
-            >
-          </video>
+      <!-- Cinematic Video Frame (Interpolated continuously from 100vw x 100vh to target slot) -->
+      <div class="hero-cinematic-frame" aria-label="ANAGÈNESE luxury product film">
+        <video 
+          class="hero-film-video"
+          autoplay 
+          muted 
+          loop 
+          playsinline 
+          preload="auto"
+          poster="<?php echo esc_url($theme_uri . '/assets/images/anagenese-hero-bottle.jpg'); ?>"
+          aria-label="ANAGÈNESE luxury elixir film featuring obsidian glass bottle and brushed silver pipette"
+        >
+          <source src="<?php echo esc_url($theme_uri . '/assets/videos/anagenese-hero.mp4'); ?>" type="video/mp4">
           <img 
             src="<?php echo esc_url($theme_uri . '/assets/images/anagenese-hero-bottle.jpg'); ?>" 
             alt="ANAGÈNESE by VELARI PRIVÉ obsidian glass bottle with brushed silver dropper cap" 
-            class="hero-film-fallback-layer" 
-            aria-hidden="true"
-            loading="lazy"
+            class="hero-film-fallback"
             width="1200"
             height="896"
           >
-        </div>
+        </video>
+        <img 
+          src="<?php echo esc_url($theme_uri . '/assets/images/anagenese-hero-bottle.jpg'); ?>" 
+          alt="ANAGÈNESE by VELARI PRIVÉ obsidian glass bottle with brushed silver dropper cap" 
+          class="hero-film-fallback-layer" 
+          aria-hidden="true"
+          loading="lazy"
+          width="1200"
+          height="896"
+        >
+      </div>
+
+      <!-- Refined Luxury Scroll Indicator -->
+      <div class="hero-scroll-cue" aria-hidden="true">
+        <span class="hero-scroll-cue-text">SCROLL TO DISCOVER</span>
+        <div class="hero-scroll-cue-indicator"></div>
       </div>
     </div>
   </section>
