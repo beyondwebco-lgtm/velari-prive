@@ -407,5 +407,28 @@
         }
       });
     });
+
+    // ------------------------------------------------------------------------
+    // 10. EDITORIAL REVELATION SECTION OBSERVER
+    // ------------------------------------------------------------------------
+    const revelationSection = document.querySelector('.editorial-revelation-section');
+    if (revelationSection) {
+      if ('IntersectionObserver' in window) {
+        const revObserver = new IntersectionObserver(
+          (entries, obs) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                revelationSection.classList.add('revealed');
+                obs.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+        );
+        revObserver.observe(revelationSection);
+      } else {
+        revelationSection.classList.add('revealed');
+      }
+    }
   });
 })();
