@@ -5,39 +5,43 @@
      Strict Prohibition: Zero gold accents or clichés. True polished metallic silver.
      ========================================================================== */
 
-  /* Obsidian & Blacks */
-  --color-obsidian: #060608;
-  --color-obsidian-deep: #09090C;
-  --color-obsidian-surface: #0E0E12;
-  --color-charcoal: #141418;
-  --color-charcoal-light: #1A1A22;
-  --color-soft-black: #1F1F27;
-  --color-stone-dark: #171615;
-  --color-stone-subtle: #222120;
+  /* Obsidian & Charcoal Backgrounds */
+  --color-obsidian: #090909;
+  --color-obsidian-deep: #050505;
+  --color-obsidian-surface: #121212;
+  --color-charcoal: #171717;
+  --color-charcoal-light: #212121;
+  --color-soft-black: #1a1a1a;
+  --color-surface-card: rgba(23, 23, 23, 0.78);
 
-  /* Polished Silver & Platinum */
-  --color-silver-muted: #8E8E98;
-  --color-silver-body: #B6B6C2;
-  --color-silver-bright: #DCDCE5;
-  --color-platinum: #F0F0F5;
-  --color-silver-border: rgba(220, 220, 230, 0.14);
-  --color-silver-border-hover: rgba(220, 220, 230, 0.35);
-  --color-silver-glow: rgba(220, 220, 235, 0.08);
+  /* Curated Luxury Typography */
+  --color-ivory: #F3F0EA;
+  --color-warm-grey: #A9A39C;
+  --color-text-primary: #F3F0EA;
+  --color-text-secondary: #A9A39C;
+  --color-text-tertiary: #7D7872;
 
-  /* Metallic Gradients (Real Polished Metal) */
-  --grad-silver-linear: linear-gradient(135deg, #A8A8B4 0%, #E8E8F0 45%, #9E9EA8 70%, #F5F5FA 100%);
-  --grad-silver-text: linear-gradient(180deg, #FFFFFF 0%, #D8D8E2 40%, #A4A4B0 100%);
-  --grad-silver-accent: linear-gradient(90deg, transparent, rgba(225, 225, 240, 0.5), transparent);
-  --grad-obsidian-radial: radial-gradient(circle at 50% 20%, #15151C 0%, #060608 85%);
-  --grad-glass-surface: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  /* Luxury Accents: Brushed Silver & Champagne */
+  --color-silver: #B7B8BA;
+  --color-silver-muted: #8E8E92;
+  --color-silver-bright: #E2E2E6;
+  --color-platinum: #F5F5F7;
+  --color-champagne: #B6A18C;
+  --color-champagne-light: #D4C4B5;
+  --color-champagne-glow: rgba(182, 161, 140, 0.16);
 
-  /* Warm White & Ivory (Editorial Text & Surfaces) */
-  --color-warm-white: #F7F6F3;
-  --color-ivory: #F2EFE9;
-  --color-ivory-muted: #D5D2CB;
-  --color-text-primary: #F7F6F3;
-  --color-text-secondary: #B4B4BE;
-  --color-text-tertiary: #7E7E8A;
+  /* Borders & Glows */
+  --color-silver-border: rgba(183, 184, 186, 0.16);
+  --color-silver-border-hover: rgba(183, 184, 186, 0.38);
+  --color-champagne-border: rgba(182, 161, 140, 0.28);
+  --color-silver-glow: rgba(183, 184, 186, 0.08);
+
+  /* Metallic Gradients (Restrained, subtle) */
+  --grad-silver-linear: linear-gradient(135deg, #A8A8B4 0%, #E8E8F0 45%, #B7B8BA 70%, #F3F0EA 100%);
+  --grad-silver-text: linear-gradient(180deg, #FFFFFF 0%, #D8D8E2 50%, #B7B8BA 100%);
+  --grad-champagne-text: linear-gradient(180deg, #F3F0EA 0%, #D4C4B5 50%, #B6A18C 100%);
+  --grad-obsidian-radial: radial-gradient(circle at 50% 25%, #171717 0%, #090909 85%);
+  --grad-glass-surface: linear-gradient(135deg, rgba(255, 255, 255, 0.035) 0%, rgba(255, 255, 255, 0.008) 100%);
 
   /* Typography */
   --font-serif: 'Cormorant Garamond', 'Cinzel', 'Didot', 'Playfair Display', Georgia, serif;

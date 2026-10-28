@@ -1,14 +1,17 @@
 /**
  * VELARI PRIVÉ — Digital Flagship Core Logic
- * Architectural Script: Navigation, Analytics Hooks, Modals, Forms
+ * High-performance, luxury interactions for the four core pages:
+ * 1. Home (/)
+ * 2. The Science (/the-science)
+ * 3. Private Discovery (/private-discovery)
+ * 4. Exclusive Access (/exclusive-access)
  */
 
 (function () {
   'use strict';
 
-  // --- ANALYTICS EVENT HOOK (GA4 / GTM / Meta Pixel Ready) ---
+  // --- PRIVACY-FIRST ANALYTICS HOOK ---
   window.velariTrackEvent = function (eventName, eventParams = {}) {
-    // Sanitise: Never send PII (names, emails, phone numbers)
     const sanitizedParams = {
       event_category: 'velari_flagship',
       brand: 'VELARI PRIVÉ',
@@ -19,26 +22,24 @@
     delete sanitizedParams.name;
     delete sanitizedParams.email;
     delete sanitizedParams.phone;
-    delete sanitizedParams.applicant_name;
+    delete sanitizedParams.message;
 
-    // GA4 dataLayer push
     if (window.dataLayer && Array.isArray(window.dataLayer)) {
       window.dataLayer.push({
         event: eventName,
         ...sanitizedParams
       });
     }
-
-    // Console logging for verification in dev
-    console.log(`[VELARI ANALYTICS EVENT]: ${eventName}`, sanitizedParams);
   };
 
   document.addEventListener('DOMContentLoaded', function () {
+    // ------------------------------------------------------------------------
     // 1. SCROLL HEADER STATE
+    // ------------------------------------------------------------------------
     const header = document.querySelector('.site-header');
     if (header) {
       const handleScroll = () => {
-        if (window.scrollY > 40) {
+        if (window.scrollY > 30) {
           header.classList.add('scrolled');
         } else {
           header.classList.remove('scrolled');
@@ -48,7 +49,9 @@
       handleScroll();
     }
 
+    // ------------------------------------------------------------------------
     // 2. MOBILE NAVIGATION DRAWER
+    // ------------------------------------------------------------------------
     const mobileToggle = document.querySelector('.mobile-nav-toggle');
     const mobileDrawer = document.querySelector('.mobile-nav-drawer');
     const mobileBackdrop = document.querySelector('.mobile-nav-backdrop');
@@ -80,106 +83,208 @@
       link.addEventListener('click', () => toggleMobileNav(false));
     });
 
-    // 3. SCIENTIFIC MODAL BRIDGE (36AUS BIOTECH)
-    const scienceModal = document.getElementById('science-bridge-modal');
-    const scienceTriggers = document.querySelectorAll('[data-trigger-science-modal]');
-    const closeScienceBtns = document.querySelectorAll('[data-close-science-modal]');
-
-    function openScienceModal(e) {
-      if (e) e.preventDefault();
-      if (scienceModal) {
-        scienceModal.classList.add('open');
-        document.body.style.overflow = 'hidden';
-        window.velariTrackEvent('science_navigation_click', {
-          destination_domain: '36ausbiotech.com',
-          trigger_location: e?.target?.dataset?.location || 'nav'
-        });
-      }
-    }
-
-    function closeScienceModal() {
-      if (scienceModal) {
-        scienceModal.classList.remove('open');
-        document.body.style.overflow = '';
-      }
-    }
-
-    scienceTriggers.forEach((btn) => btn.addEventListener('click', openScienceModal));
-    closeScienceBtns.forEach((btn) => btn.addEventListener('click', closeScienceModal));
-
-    if (scienceModal) {
-      scienceModal.addEventListener('click', function (e) {
-        if (e.target === scienceModal) closeScienceModal();
-      });
-    }
-
-    // 4. PRIVATE DISCOVERY MODAL
-    const discoveryModal = document.getElementById('private-discovery-modal');
-    const discoveryTriggers = document.querySelectorAll('[data-trigger-discovery-modal]');
-    const closeDiscoveryBtns = document.querySelectorAll('[data-close-discovery-modal]');
-
-    function openDiscoveryModal(e) {
-      if (e) e.preventDefault();
-      if (discoveryModal) {
-        discoveryModal.classList.add('open');
-        document.body.style.overflow = 'hidden';
-        window.velariTrackEvent('private_discovery_opened', {
-          entry_point: e?.target?.dataset?.entry || 'header_button'
-        });
-      }
-    }
-
-    function closeDiscoveryModal() {
-      if (discoveryModal) {
-        discoveryModal.classList.remove('open');
-        document.body.style.overflow = '';
-      }
-    }
-
-    discoveryTriggers.forEach((btn) => btn.addEventListener('click', openDiscoveryModal));
-    closeDiscoveryBtns.forEach((btn) => btn.addEventListener('click', closeDiscoveryModal));
-
-    if (discoveryModal) {
-      discoveryModal.addEventListener('click', function (e) {
-        if (e.target === discoveryModal) closeDiscoveryModal();
-      });
-    }
-
-    // Close modals on Escape key
+    // Close on Escape key
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') {
-        closeScienceModal();
-        closeDiscoveryModal();
         toggleMobileNav(false);
       }
     });
 
-    // 5. PROFESSIONAL EOI FORM HANDLER
-    const professionalForm = document.getElementById('professional-eoi-form');
-    if (professionalForm) {
-      // Track input start
-      let formStarted = false;
-      professionalForm.addEventListener('focusin', () => {
-        if (!formStarted) {
-          formStarted = true;
-          window.velariTrackEvent('professional_enquiry_start');
+    // ------------------------------------------------------------------------
+    // 3. ACTIVE NAV HIGHLIGHTING
+    // ------------------------------------------------------------------------
+    const currentPath = window.location.pathname.replace(/\/$/, '') || '/';
+    document.querySelectorAll('.nav-link, .mobile-nav-link').forEach((link) => {
+      const href = link.getAttribute('href');
+      if (!href) return;
+      const cleanHref = href.replace(/\/$/, '') || '/';
+      if (
+        cleanHref === currentPath ||
+        (currentPath.includes('the-science') && cleanHref.includes('the-science')) ||
+        (currentPath.includes('private-discovery') && cleanHref.includes('private-discovery')) ||
+        (currentPath.includes('exclusive-access') && cleanHref.includes('exclusive-access')) ||
+        (currentPath === '/' && (cleanHref === '/' || cleanHref === '/index.html'))
+      ) {
+        link.classList.add('active');
+      }
+    });
+
+    // ------------------------------------------------------------------------
+    // 4. HERO VIDEO AUTOPLAY WITH GRACEFUL FALLBACK
+    // ------------------------------------------------------------------------
+    const heroVideos = document.querySelectorAll('.hero-film-video, video[autoplay]');
+    heroVideos.forEach((video) => {
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          video.closest('.video-container')?.classList.add('playback-fallback');
+        });
+      }
+    });
+
+    // ------------------------------------------------------------------------
+    // 5. PRIVATE DISCOVERY: CONCERN CARDS SELECTION
+    // ------------------------------------------------------------------------
+    const concernCards = document.querySelectorAll('.concern-card');
+    const selectedConcerns = new Set();
+    const areaOfInterestSelect = document.getElementById('discovery-interest');
+
+    concernCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        const concern = card.dataset.concern;
+        if (!concern) return;
+
+        if (card.classList.contains('selected')) {
+          card.classList.remove('selected');
+          selectedConcerns.delete(concern);
+        } else {
+          card.classList.add('selected');
+          selectedConcerns.add(concern);
         }
+
+        // Sync with enquiry form
+        if (areaOfInterestSelect && selectedConcerns.size > 0) {
+          const firstSelected = Array.from(selectedConcerns)[0];
+          areaOfInterestSelect.value = firstSelected;
+        }
+
+        window.velariTrackEvent('concern_card_toggled', {
+          concern: concern,
+          total_selected: selectedConcerns.size
+        });
+      });
+    });
+
+    // ------------------------------------------------------------------------
+    // 6. PRIVATE DISCOVERY: MULTI-STEP QUESTIONNAIRE
+    // ------------------------------------------------------------------------
+    const questionnaireContainer = document.querySelector('.questionnaire-container');
+    if (questionnaireContainer) {
+      let currentStep = 1;
+      const totalSteps = 4;
+      const userAnswers = {
+        primaryInterest: '',
+        currentRoutine: '',
+        priorityQuality: '',
+        liaisonPreference: ''
+      };
+
+      const steps = questionnaireContainer.querySelectorAll('.questionnaire-step');
+      const progressPills = questionnaireContainer.querySelectorAll('.progress-pill');
+      const resultCard = document.getElementById('questionnaire-result-card');
+      const resultPreferencesList = document.getElementById('result-preferences-list');
+
+      function updateStepView() {
+        steps.forEach((step, idx) => {
+          step.classList.toggle('active', idx + 1 === currentStep);
+        });
+
+        progressPills.forEach((pill, idx) => {
+          pill.classList.remove('active', 'completed');
+          if (idx + 1 === currentStep) {
+            pill.classList.add('active');
+          } else if (idx + 1 < currentStep) {
+            pill.classList.add('completed');
+          }
+        });
+      }
+
+      // Option selection inside choice tiles
+      questionnaireContainer.querySelectorAll('.choice-tile').forEach((tile) => {
+        tile.addEventListener('click', () => {
+          const stepEl = tile.closest('.questionnaire-step');
+          if (!stepEl) return;
+
+          stepEl.querySelectorAll('.choice-tile').forEach((t) => t.classList.remove('selected'));
+          tile.classList.add('selected');
+
+          const stepNum = parseInt(stepEl.dataset.step, 10);
+          const value = tile.dataset.value || tile.querySelector('.choice-label')?.textContent?.trim();
+
+          if (stepNum === 1) userAnswers.primaryInterest = value;
+          if (stepNum === 2) userAnswers.currentRoutine = value;
+          if (stepNum === 3) userAnswers.priorityQuality = value;
+          if (stepNum === 4) userAnswers.liaisonPreference = value;
+
+          // Enable next button for this step
+          const nextBtn = stepEl.querySelector('[data-questionnaire-next]');
+          if (nextBtn) nextBtn.removeAttribute('disabled');
+        });
       });
 
-      professionalForm.addEventListener('submit', function (e) {
+      // Next & Back Buttons
+      questionnaireContainer.querySelectorAll('[data-questionnaire-next]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          if (currentStep < totalSteps) {
+            currentStep++;
+            updateStepView();
+          } else {
+            // Completed questionnaire
+            completeQuestionnaire();
+          }
+        });
+      });
+
+      questionnaireContainer.querySelectorAll('[data-questionnaire-prev]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          if (currentStep > 1) {
+            currentStep--;
+            updateStepView();
+          }
+        });
+      });
+
+      function completeQuestionnaire() {
+        steps.forEach((s) => s.classList.remove('active'));
+        if (resultCard) {
+          resultCard.style.display = 'block';
+          if (resultPreferencesList) {
+            resultPreferencesList.innerHTML = '';
+            Object.values(userAnswers)
+              .filter(Boolean)
+              .forEach((val) => {
+                const chip = document.createElement('span');
+                chip.className = 'preference-chip';
+                chip.textContent = val;
+                resultPreferencesList.appendChild(chip);
+              });
+          }
+          resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Prefill enquiry form
+        const formInterest = document.getElementById('discovery-interest');
+        if (formInterest && userAnswers.primaryInterest) {
+          formInterest.value = userAnswers.primaryInterest;
+        }
+
+        window.velariTrackEvent('questionnaire_completed', userAnswers);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    // 7. PRIVATE DISCOVERY & EXCLUSIVE ACCESS FORMS
+    // ------------------------------------------------------------------------
+    function setupEnquiryForm(formId, statusId, eventName, successHeading, successBody) {
+      const form = document.getElementById(formId);
+      const statusBox = document.getElementById(statusId);
+      if (!form) return;
+
+      form.addEventListener('submit', function (e) {
         e.preventDefault();
-        const statusBox = document.getElementById('eoi-form-status');
-        const submitBtn = professionalForm.querySelector('button[type="submit"]');
+        const submitBtn = form.querySelector('button[type="submit"]');
 
         // Validation
-        const requiredFields = professionalForm.querySelectorAll('[required]');
+        const requiredFields = form.querySelectorAll('[required]');
         let valid = true;
         requiredFields.forEach((field) => {
-          if (!field.value.trim() || (field.type === 'checkbox' && !field.checked)) {
+          if (field.type === 'checkbox') {
+            if (!field.checked) valid = false;
+          } else if (!field.value.trim()) {
             valid = false;
-            field.classList.add('error');
+            field.style.borderColor = 'rgba(240, 120, 120, 0.6)';
           } else {
-            field.classList.remove('error');
+            field.style.borderColor = '';
           }
         });
 
@@ -191,7 +296,6 @@
           return;
         }
 
-        // Simulate secure submission
         if (submitBtn) {
           submitBtn.disabled = true;
           submitBtn.textContent = 'Transmitting Privately...';
@@ -200,240 +304,108 @@
         setTimeout(() => {
           if (statusBox) {
             statusBox.className = 'form-status success';
-            statusBox.innerHTML = '<strong>Enquiry Transmitted Privately.</strong><br>Thank you. Your Expression of Interest has been received by the VELARI PRIVÉ Directorship. A senior representative will review your profile with discretion.';
+            statusBox.innerHTML = `<strong>${successHeading}</strong><br>${successBody}`;
           }
-          professionalForm.reset();
+          form.reset();
           if (submitBtn) {
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Submit Expression of Interest';
+            submitBtn.textContent = 'Transmitted Securely';
           }
-
-          window.velariTrackEvent('professional_enquiry_submit', {
-            status: 'success'
-          });
-        }, 1200);
+          window.velariTrackEvent(eventName, { status: 'submitted' });
+        }, 1100);
       });
     }
 
-    // 6. PRIVATE CONCIERGE FORM HANDLER
-    const conciergeForm = document.getElementById('concierge-enquiry-form');
-    if (conciergeForm) {
-      conciergeForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-        const statusBox = document.getElementById('concierge-form-status');
-        const submitBtn = conciergeForm.querySelector('button[type="submit"]');
+    setupEnquiryForm(
+      'private-discovery-form',
+      'discovery-form-status',
+      'private_discovery_enquiry_submitted',
+      'Your Private Discovery Has Been Lodged.',
+      'Thank you. Your cosmetic preferences and confidential details have been received by the VELARI PRIVÉ Private Client Liaison. A personal introduction will follow with utmost discretion.'
+    );
 
-        if (submitBtn) {
-          submitBtn.disabled = true;
-          submitBtn.textContent = 'Transmitting Securely...';
-        }
+    setupEnquiryForm(
+      'exclusive-access-form',
+      'access-form-status',
+      'exclusive_access_enquiry_submitted',
+      'Private Access Request Received.',
+      'Thank you. Your allocation request has been routed to our private client team. Allocations are confirmed individually, ensuring considered presentation and direct liaison.'
+    );
 
-        setTimeout(() => {
-          if (statusBox) {
-            statusBox.className = 'form-status success';
-            statusBox.innerHTML = '<strong>Private Introduction Lodged.</strong><br>Your request has been dispatched directly to the Velari Privé Private Client Concierge. All correspondence remains strictly confidential.';
-          }
-          conciergeForm.reset();
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Submit Private Enquiry';
-          }
+    // ------------------------------------------------------------------------
+    // 8. THE SCIENCE: INTERACTIVE INGREDIENT EXPLORER
+    // ------------------------------------------------------------------------
+    const ingredientData = {
+      botanical: {
+        title: 'Botanical Antioxidant Matrix',
+        subtitle: 'Australian formulation botanical synergy',
+        function: 'Cosmetic Scalp Comfort & Free-Radical Defense',
+        rationale: 'Exposed to urban dust, UV radiation, and environmental stress, the scalp surface requires protective co-factors. Carefully balanced botanical fractions provide soothing cosmetic comfort without disrupting the scalp’s lipid mantle.',
+        visualAlt: 'Botanical matrix close-up'
+      },
+      hydration: {
+        title: 'Biomimetic Hydration Complex',
+        subtitle: 'Micro-aqueous moisture balance',
+        function: 'Lightweight Scalp Hydration & Moisture Retention',
+        rationale: 'Unlike heavy cosmetic oils that coat the follicle opening, this biomimetic humectant complex mimics natural moisture factors (NMF), locking in aqueous comfort with zero stickiness or residue.',
+        visualAlt: 'Clear aqueous hydration droplet'
+      },
+      peptide: {
+        title: 'Tri-Peptide Conditioning Blend',
+        subtitle: 'Strand & cuticle smoothing',
+        function: 'Hair Manageability, Tactile Silkiness & Lustre',
+        rationale: 'Targeted peptide chains condition the hair fiber along the emerging shaft, imparting exceptional glide, structural softeness, and reflective radiance under natural light.',
+        visualAlt: 'Microscopic fiber peptide interaction'
+      },
+      barrier: {
+        title: 'Scalp Barrier Co-Factors',
+        subtitle: 'Protective acid mantle support',
+        function: 'Microbiome Harmony & Surface Barrier Equilibrium',
+        rationale: 'Formulated at physiological scalp pH (~5.5), these co-factors preserve the integrity of the stratum corneum, supporting calm comfort and balanced sebum dynamics.',
+        visualAlt: 'Hydrolipidic barrier protection model'
+      }
+    };
 
-          window.velariTrackEvent('private_discovery_submit', {
-            status: 'success'
-          });
-        }, 1000);
-      });
-    }
+    const ingredientTabs = document.querySelectorAll('.ingredient-tab-btn');
+    const ingredientCardTitle = document.getElementById('ingredient-card-title');
+    const ingredientCardSub = document.getElementById('ingredient-card-sub');
+    const ingredientCardFunction = document.getElementById('ingredient-card-function');
+    const ingredientCardRationale = document.getElementById('ingredient-card-rationale');
 
-    // 7. TRACK PRODUCT DISCOVERY CLICKS
-    document.querySelectorAll('[data-track-discovery]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        window.velariTrackEvent('product_discovery_click', {
-          target: btn.getAttribute('href') || 'product_view'
+    if (ingredientTabs.length > 0 && ingredientCardTitle) {
+      ingredientTabs.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const key = btn.dataset.ingredient;
+          if (!key || !ingredientData[key]) return;
+
+          ingredientTabs.forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          const data = ingredientData[key];
+          ingredientCardTitle.textContent = data.title;
+          ingredientCardSub.textContent = data.subtitle;
+          if (ingredientCardFunction) ingredientCardFunction.textContent = data.function;
+          if (ingredientCardRationale) ingredientCardRationale.textContent = data.rationale;
+
+          window.velariTrackEvent('ingredient_tab_viewed', { ingredient: key });
         });
+      });
+    }
+
+    // ------------------------------------------------------------------------
+    // 9. EXCLUSIVE ACCESS: ALLOCATION SELECTION
+    // ------------------------------------------------------------------------
+    const allocationCards = document.querySelectorAll('.allocation-card');
+    const allocationInput = document.getElementById('access-allocation');
+    allocationCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        allocationCards.forEach((c) => c.classList.remove('selected'));
+        card.classList.add('selected');
+        const alloc = card.dataset.allocation;
+        if (allocationInput && alloc) {
+          allocationInput.value = alloc;
+        }
       });
     });
-
-    // 8. 360° HERO FILM AUTOPLAY & GRACEFUL FALLBACK
-    const heroFilmVideo = document.querySelector('.hero-film-video');
-    const heroFallbackLayer = document.querySelector('.hero-film-fallback-layer');
-    if (heroFilmVideo) {
-      const startAutoplay = function () {
-        const promise = heroFilmVideo.play();
-        if (promise !== undefined) {
-          promise.catch(function () {
-            // If browser blocks autoplay, activate graceful fallback image layer
-            if (heroFallbackLayer) heroFallbackLayer.classList.add('visible');
-          });
-        }
-      };
-
-      heroFilmVideo.addEventListener('error', function () {
-        if (heroFallbackLayer) heroFallbackLayer.classList.add('visible');
-      });
-
-      heroFilmVideo.addEventListener('playing', function () {
-        if (heroFallbackLayer) heroFallbackLayer.classList.remove('visible');
-      });
-
-      startAutoplay();
-    }
-
-    // 9. CINEMATIC FULL-SCREEN VIDEO HERO WITH SCROLL-DRIVEN SHRINK TRANSITION
-    function initHeroScrollCinematic() {
-      const track = document.querySelector('.hero-scroll-track');
-      const stage = document.querySelector('.hero-sticky-stage');
-      const frame = document.querySelector('.hero-cinematic-frame');
-      const target = document.querySelector('.hero-film-target');
-      const cue = document.querySelector('.hero-scroll-cue');
-
-      if (!track || !stage || !frame || !target) return;
-
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-      if (prefersReducedMotion.matches) {
-        document.documentElement.classList.add('hero-reduced-motion');
-        return;
-      }
-
-      document.documentElement.classList.add('hero-scroll-enabled');
-
-      // Staggered threshold configurations for editorial typography
-      const textElements = [
-        { el: stage.querySelector('.hero-eyebrow'), start: 0.15, end: 0.52 },
-        { el: stage.querySelector('.hero-title'), start: 0.22, end: 0.60 },
-        { el: stage.querySelector('.hero-headline'), start: 0.28, end: 0.68 },
-        { el: stage.querySelector('.hero-body'), start: 0.36, end: 0.76 },
-        { el: stage.querySelector('.hero-cta-group'), start: 0.44, end: 0.84 }
-      ].filter(item => item.el !== null);
-
-      let stageRect = { left: 0, top: 0, width: window.innerWidth, height: window.innerHeight };
-      let targetX = 0;
-      let targetY = 0;
-      let targetW = 0;
-      let targetH = 0;
-      let maxScroll = 1;
-      let isTicking = false;
-
-      function measure() {
-        const sRect = stage.getBoundingClientRect();
-        const tRect = target.getBoundingClientRect();
-
-        stageRect = {
-          left: sRect.left,
-          top: sRect.top,
-          width: stage.offsetWidth || window.innerWidth,
-          height: stage.offsetHeight || window.innerHeight
-        };
-
-        targetX = tRect.left - sRect.left;
-        targetY = tRect.top - sRect.top;
-        targetW = tRect.width;
-        targetH = tRect.height;
-
-        maxScroll = Math.max(1, track.offsetHeight - window.innerHeight);
-      }
-
-      function smoothstep(min, max, value) {
-        const x = Math.max(0, Math.min(1, (value - min) / (max - min)));
-        return x * x * (3 - 2 * x);
-      }
-
-      function easeInOutCubic(x) {
-        return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
-      }
-
-      let lastAppliedT = -1;
-
-      function applyFrameTransform(t) {
-        const easedT = easeInOutCubic(t);
-
-        const curX = targetX * easedT;
-        const curY = targetY * easedT;
-        const curW = stageRect.width + (targetW - stageRect.width) * easedT;
-        const curH = stageRect.height + (targetH - stageRect.height) * easedT;
-        const curRadius = 4 * easedT;
-        const curShadowAlpha = 0.45 * easedT;
-        const curBorderAlpha = 0.12 * easedT;
-
-        frame.style.transform = `translate3d(${curX.toFixed(2)}px, ${curY.toFixed(2)}px, 0)`;
-        frame.style.width = `${curW.toFixed(2)}px`;
-        frame.style.height = `${curH.toFixed(2)}px`;
-        frame.style.borderRadius = `${curRadius.toFixed(2)}px`;
-        frame.style.boxShadow = curShadowAlpha > 0.01 
-          ? `0 24px 60px -12px rgba(0, 0, 0, ${curShadowAlpha.toFixed(3)})` 
-          : 'none';
-        frame.style.borderColor = curBorderAlpha > 0.01 
-          ? `rgba(242, 239, 233, ${curBorderAlpha.toFixed(3)})` 
-          : 'transparent';
-
-        textElements.forEach(item => {
-          const itemProgress = smoothstep(item.start, item.end, t);
-          const translateY = (1 - itemProgress) * 16;
-          item.el.style.opacity = itemProgress.toFixed(3);
-          item.el.style.transform = `translateY(${translateY.toFixed(2)}px)`;
-        });
-      }
-
-      function update() {
-        const scrollY = window.scrollY || window.pageYOffset || 0;
-        const progress = Math.max(0, Math.min(1, scrollY / maxScroll));
-
-        // Milestones:
-        // 0% -> 20%: Full-screen video hold (t = 0)
-        // 20% -> 60%: Smooth shrink transition to 45-50% width on right (t: 0 -> 1)
-        // 60% -> 100%: Holds final split hero layout
-        let t = 0;
-        if (progress <= 0.20) {
-          t = 0;
-        } else if (progress >= 0.60) {
-          t = 1;
-        } else {
-          t = (progress - 0.20) / (0.60 - 0.20);
-        }
-
-        if (Math.abs(t - lastAppliedT) > 0.0005 || lastAppliedT === -1) {
-          applyFrameTransform(t);
-          lastAppliedT = t;
-        }
-
-        if (cue) {
-          const cueAlpha = Math.max(0, 1 - (progress / 0.12));
-          cue.style.opacity = cueAlpha.toFixed(3);
-          cue.style.pointerEvents = cueAlpha <= 0.01 ? 'none' : 'auto';
-        }
-
-        isTicking = false;
-      }
-
-      function onScroll() {
-        if (!isTicking) {
-          isTicking = true;
-          requestAnimationFrame(update);
-        }
-      }
-
-      function onResize() {
-        measure();
-        lastAppliedT = -1;
-        update();
-      }
-
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', onResize, { passive: true });
-      window.addEventListener('orientationchange', onResize, { passive: true });
-
-      measure();
-      update();
-
-      if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(() => {
-          measure();
-          update();
-        });
-      }
-    }
-
-    initHeroScrollCinematic();
   });
 })();

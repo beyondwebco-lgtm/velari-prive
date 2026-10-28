@@ -307,3 +307,418 @@
 .science-bridge-chip:hover {
   border-color: var(--color-silver-bright);
 }
+
+/* ==========================================================================
+   CONCERN SELECTION CARDS (PRIVATE DISCOVERY)
+   ========================================================================== */
+.concern-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin: 2.5rem 0;
+}
+
+@media (min-width: 768px) {
+  .concern-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+.concern-card {
+  background: rgba(23, 23, 23, 0.7);
+  border: 1px solid var(--color-silver-border);
+  border-radius: var(--radius-xs);
+  padding: 1.75rem 1.5rem;
+  cursor: pointer;
+  position: relative;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  user-select: none;
+}
+
+.concern-card:hover {
+  border-color: var(--color-silver-border-hover);
+  background: rgba(30, 30, 30, 0.85);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.concern-card.selected {
+  border-color: var(--color-champagne);
+  background: rgba(35, 30, 26, 0.85);
+  box-shadow: 0 0 25px var(--color-champagne-glow);
+}
+
+.concern-card .card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+}
+
+.concern-card .concern-indicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--color-silver-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.concern-card.selected .concern-indicator {
+  background: var(--color-champagne);
+  border-color: var(--color-champagne);
+}
+
+.concern-card .concern-indicator svg {
+  width: 10px;
+  height: 10px;
+  stroke: #090909;
+  stroke-width: 2;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.concern-card.selected .concern-indicator svg {
+  opacity: 1;
+}
+
+.concern-card .concern-title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--color-ivory);
+  margin-bottom: 0.5rem;
+  font-weight: 400;
+}
+
+.concern-card .concern-desc {
+  font-size: 0.82rem;
+  color: var(--color-warm-grey);
+  line-height: 1.55;
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
+   INTERACTIVE QUESTIONNAIRE (PRIVATE DISCOVERY)
+   ========================================================================== */
+.questionnaire-container {
+  background: rgba(23, 23, 23, 0.75);
+  border: 1px solid var(--color-silver-border);
+  border-radius: var(--radius-xs);
+  padding: clamp(1.75rem, 4vw, 3.5rem);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+}
+
+.questionnaire-progress-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2.5rem;
+  justify-content: center;
+}
+
+.progress-pill {
+  height: 3px;
+  flex: 1;
+  max-width: 70px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 2px;
+  transition: background var(--transition-fast);
+}
+
+.progress-pill.active {
+  background: var(--color-champagne);
+}
+
+.progress-pill.completed {
+  background: var(--color-silver-bright);
+}
+
+.questionnaire-step {
+  display: none;
+  animation: stepFadeIn 0.4s var(--ease-luxury) forwards;
+}
+
+.questionnaire-step.active {
+  display: block;
+}
+
+@keyframes stepFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-champagne);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.step-heading {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 2.8vw, 2.1rem);
+  color: var(--color-ivory);
+  margin-bottom: 1.75rem;
+}
+
+.choice-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+  margin-bottom: 2.25rem;
+}
+
+@media (min-width: 640px) {
+  .choice-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.choice-tile {
+  background: rgba(14, 14, 14, 0.8);
+  border: 1px solid var(--color-silver-border);
+  padding: 1.25rem 1.4rem;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  text-align: left;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+}
+
+.choice-tile:hover {
+  border-color: var(--color-silver-border-hover);
+  background: rgba(24, 24, 24, 0.9);
+}
+
+.choice-tile.selected {
+  border-color: var(--color-champagne);
+  background: rgba(36, 31, 27, 0.85);
+  box-shadow: 0 0 18px var(--color-champagne-glow);
+}
+
+.choice-tile .choice-label {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  color: var(--color-ivory);
+  margin-bottom: 0.25rem;
+}
+
+.choice-tile .choice-sub {
+  font-size: 0.78rem;
+  color: var(--color-warm-grey);
+  line-height: 1.45;
+}
+
+.step-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 1.5rem;
+}
+
+/* Personalized Result Card */
+.discovery-result-card {
+  background: rgba(28, 26, 24, 0.75);
+  border: 1px solid var(--color-champagne-border);
+  border-radius: var(--radius-xs);
+  padding: clamp(1.75rem, 3.5vw, 2.75rem);
+  margin-bottom: 2.5rem;
+  box-shadow: 0 0 35px var(--color-champagne-glow);
+}
+
+.preference-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.25rem 0;
+}
+
+.preference-chip {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.85rem;
+  background: rgba(182, 161, 140, 0.12);
+  border: 1px solid var(--color-champagne-border);
+  color: var(--color-champagne-light);
+  border-radius: var(--radius-full);
+}
+
+/* ==========================================================================
+   INGREDIENT EXPLORER (THE SCIENCE)
+   ========================================================================== */
+.ingredient-nav {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  margin-bottom: 2rem;
+  scrollbar-width: none;
+}
+
+.ingredient-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.ingredient-tab-btn {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.4rem;
+  background: rgba(23, 23, 23, 0.6);
+  border: 1px solid var(--color-silver-border);
+  border-radius: var(--radius-xs);
+  color: var(--color-warm-grey);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.ingredient-tab-btn:hover {
+  color: var(--color-ivory);
+  border-color: var(--color-silver-border-hover);
+}
+
+.ingredient-tab-btn.active {
+  color: #090909;
+  background: var(--color-silver-bright);
+  border-color: var(--color-silver-bright);
+  font-weight: 500;
+}
+
+.ingredient-display-card {
+  background: rgba(23, 23, 23, 0.75);
+  border: 1px solid var(--color-silver-border);
+  border-radius: var(--radius-xs);
+  padding: clamp(1.75rem, 4vw, 3rem);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .ingredient-display-card {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ==========================================================================
+   EXCLUSIVE ACCESS SPECIFICATIONS & ALLOCATION
+   ========================================================================== */
+.spec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin: 2.5rem 0;
+}
+
+.spec-tile {
+  background: rgba(23, 23, 23, 0.6);
+  border: 1px solid var(--color-silver-border);
+  padding: 1.5rem;
+  border-radius: var(--radius-xs);
+}
+
+.spec-label {
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-warm-grey);
+  margin-bottom: 0.35rem;
+  display: block;
+}
+
+.spec-value {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--color-ivory);
+}
+
+.allocation-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin: 2.5rem 0;
+}
+
+.allocation-card {
+  background: rgba(23, 23, 23, 0.7);
+  border: 1px solid var(--color-silver-border);
+  border-radius: var(--radius-xs);
+  padding: 2rem 1.75rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+  position: relative;
+}
+
+.allocation-card:hover {
+  border-color: var(--color-silver-border-hover);
+  transform: translateY(-2px);
+}
+
+.allocation-card.selected {
+  border-color: var(--color-champagne);
+  background: rgba(32, 28, 25, 0.85);
+  box-shadow: 0 0 25px var(--color-champagne-glow);
+}
+
+/* ==========================================================================
+   COMPLIANCE DISCLAIMER BOX
+   ========================================================================== */
+.compliance-disclaimer {
+  background: rgba(18, 18, 18, 0.65);
+  border-left: 2px solid var(--color-silver-muted);
+  padding: 1.25rem 1.5rem;
+  margin: 2.5rem 0;
+  border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+}
+
+.compliance-disclaimer p {
+  font-size: 0.78rem;
+  color: var(--color-warm-grey);
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+/* Button with Champagne Accent */
+.btn-champagne {
+  background: linear-gradient(135deg, #A89582 0%, #E0D2C3 45%, #B6A18C 70%, #F3F0EA 100%);
+  color: #090909;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 4px 20px var(--color-champagne-glow);
+}
+
+.btn-champagne:hover {
+  background: #FFFFFF;
+  color: #000000;
+  box-shadow: 0 6px 28px rgba(182, 161, 140, 0.4);
+  transform: translateY(-1px);
+}
+
