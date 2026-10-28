@@ -101,7 +101,8 @@
       if (
         cleanHref === currentPath ||
         (currentPath.includes('the-science') && cleanHref.includes('the-science')) ||
-        (currentPath.includes('private-discovery') && cleanHref.includes('private-discovery')) ||
+        (currentPath.includes('personal-discovery') && cleanHref.includes('personal-discovery')) ||
+        (currentPath.includes('private-discovery') && (cleanHref.includes('private-discovery') || cleanHref.includes('personal-discovery'))) ||
         (currentPath.includes('exclusive-access') && cleanHref.includes('exclusive-access')) ||
         (currentPath === '/' && (cleanHref === '/' || cleanHref === '/index.html'))
       ) {
@@ -123,29 +124,30 @@
     });
 
     // ------------------------------------------------------------------------
-    // 5. PRIVATE DISCOVERY: CONCERN CARDS SELECTION
+    // 5. PERSONAL / PRIVATE DISCOVERY: CONCERN CARDS SELECTION
     // ------------------------------------------------------------------------
     const concernCards = document.querySelectorAll('.concern-card');
     const selectedConcerns = new Set();
-    const areaOfInterestSelect = document.getElementById('discovery-interest');
 
     concernCards.forEach((card) => {
       card.addEventListener('click', () => {
         const concern = card.dataset.concern;
         if (!concern) return;
 
+        // Toggle selected state
         if (card.classList.contains('selected')) {
           card.classList.remove('selected');
           selectedConcerns.delete(concern);
         } else {
+          // Highlight card
           card.classList.add('selected');
           selectedConcerns.add(concern);
         }
 
-        // Sync with enquiry form
-        if (areaOfInterestSelect && selectedConcerns.size > 0) {
-          const firstSelected = Array.from(selectedConcerns)[0];
-          areaOfInterestSelect.value = firstSelected;
+        // Sync with enquiry form (pd-concern or discovery-interest)
+        const targetSelect = document.getElementById('pd-concern') || document.getElementById('discovery-interest');
+        if (targetSelect && concern) {
+          targetSelect.value = concern;
         }
 
         window.velariTrackEvent('concern_card_toggled', {
@@ -315,6 +317,14 @@
         }, 1100);
       });
     }
+
+    setupEnquiryForm(
+      'personal-discovery-form',
+      'pd-form-status',
+      'personal_discovery_enquiry_submitted',
+      'Your Private Enquiry Has Been Lodged.',
+      'Thank you. Your cosmetic preferences and details have been transmitted to the VELARI PRIVÉ Private Client Liaison. A personal introduction will follow with utmost discretion.'
+    );
 
     setupEnquiryForm(
       'private-discovery-form',
