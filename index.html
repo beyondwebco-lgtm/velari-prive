@@ -96,65 +96,22 @@
   <main id="main-content">
 
     <!-- ======================================================================
-         SECTION A: CINEMATIC HERO
+         SECTION A: CINEMATIC HERO (PURE VIDEO SHOWCASE)
          ====================================================================== -->
-    <section class="section section-hero" style="position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; min-height: 100vh;">
-      
-      <!-- Video / Imagery Centerpiece Layer -->
-      <div style="position: absolute; inset: 0; z-index: 1; overflow: hidden;">
-        <video 
-          class="hero-film-video" 
-          autoplay 
-          muted 
-          loop 
-          playsinline 
-          poster="/assets/images/anagenese-hero-bottle.jpg"
-          style="width: 100%; height: 100%; object-fit: cover; opacity: 0.45; filter: contrast(1.08) brightness(0.85);"
-        >
-          <source src="/assets/videos/anagenese-hero.mp4" type="video/mp4">
-        </video>
-        <!-- Subtle Vignette & Gradient Overlays -->
-        <div style="position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(9,9,9,0.2) 0%, rgba(9,9,9,0.85) 75%, #090909 100%);"></div>
-        <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background: linear-gradient(to top, #090909, transparent);"></div>
-      </div>
-
-      <!-- Hero Content -->
-      <div class="container" style="position: relative; z-index: 2; text-align: center; padding-top: calc(var(--header-height) + 2rem); padding-bottom: 4rem;">
-        <span class="eyebrow eyebrow-silver" style="letter-spacing: 0.4em; display: inline-block; margin-bottom: 1.25rem;">
-          VELARI PRIVÉ
-        </span>
-
-        <h1 style="font-family: var(--font-serif); font-size: clamp(3rem, 7.5vw, 6.5rem); font-weight: 300; letter-spacing: 0.08em; line-height: 1; color: var(--color-ivory); margin-bottom: 1.5rem;">
-          ANAGÈNESE
-        </h1>
-
-        <p style="font-family: var(--font-serif); font-size: clamp(1.2rem, 2.5vw, 1.85rem); font-weight: 300; color: var(--color-silver-bright); letter-spacing: 0.06em; margin-bottom: 0.75rem;">
-          The Art of Scalp Care.
-        </p>
-
-        <p style="font-size: clamp(0.72rem, 1.2vw, 0.85rem); font-weight: 400; letter-spacing: 0.3em; text-transform: uppercase; color: var(--color-warm-grey); margin-bottom: 2.75rem;">
-          French-inspired. Australian-formulated.
-        </p>
-
-        <div style="display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap;">
-          <a href="#product-experience" class="btn btn-primary">
-            DISCOVER ANAGÈNESE
-          </a>
-          <a href="/private-discovery.html" class="btn btn-secondary">
-            PRIVATE DISCOVERY
-          </a>
-        </div>
-
-        <!-- Subtle Scroll Cue -->
-        <div style="margin-top: clamp(2.5rem, 5vh, 4rem); opacity: 0.6;">
-          <a href="#product-experience" aria-label="Scroll to product discovery" style="display: inline-flex; flex-direction: column; align-items: center; gap: 0.5rem; color: var(--color-silver-muted); font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;">
-            <span>DISCOVER</span>
-            <svg width="12" height="18" viewBox="0 0 12 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 1V15M6 15L1 10M6 15L11 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-            </svg>
-          </a>
-        </div>
-      </div>
+    <section class="section section-hero" style="position: relative; width: 100%; height: 100vh; height: 100svh; overflow: hidden; background: #090909;">
+      <video 
+        class="hero-film-video" 
+        autoplay 
+        muted 
+        loop 
+        playsinline 
+        poster="/assets/images/anagenese-hero-bottle.jpg"
+        style="width: 100%; height: 100%; object-fit: cover; display: block;"
+      >
+        <source src="/assets/videos/Hero_Section_Cap_screwing_onto_serum_bottle_cec53739_1080p.mp4" type="video/mp4">
+      </video>
+      <!-- Seamless soft bottom blend into Section B -->
+      <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 120px; background: linear-gradient(to top, #090909, transparent); pointer-events: none;"></div>
     </section>
 
     <!-- ======================================================================
