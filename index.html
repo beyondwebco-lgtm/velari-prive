@@ -165,27 +165,10 @@
     <section id="product-experience" class="section" style="background-color: var(--color-obsidian); border-top: 1px solid var(--color-silver-border);">
       <div class="container">
         
-        <div style="display: grid; grid-template-columns: 1fr; gap: clamp(3rem, 6vw, 6rem); align-items: center;" class="craft-layout">
+        <div class="intro-layout">
           
-          <!-- Left: Product Close-up Visual -->
-          <div style="position: relative;">
-            <div style="border: 1px solid var(--color-silver-border); border-radius: var(--radius-xs); overflow: hidden; background: #121212; box-shadow: var(--shadow-elevated);">
-              <img 
-                src="/assets/images/anagenese-bottle-detail.png" 
-                alt="ANAGÈNESE by VELARI PRIVÉ obsidian flacon detail" 
-                style="width: 100%; height: auto; display: block; transition: transform var(--transition-slow); object-fit: contain;"
-                loading="lazy"
-              >
-            </div>
-            <!-- Quiet Accent Caption -->
-            <div style="margin-top: 1rem; display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--color-silver-muted); letter-spacing: 0.18em; text-transform: uppercase;">
-              <span>50ml Obsidian Flacon</span>
-              <span>Calibrated Borosilicate Dropper</span>
-            </div>
-          </div>
-
-          <!-- Right: Minimal, Confident Copy -->
-          <div style="max-width: 540px;">
+          <!-- Left: Minimal, Confident Copy -->
+          <div style="max-width: 580px;">
             <span class="eyebrow eyebrow-silver">THE INTRODUCTION</span>
             
             <h2 style="font-size: clamp(2rem, 3.8vw, 3.4rem); line-height: 1.15; margin-bottom: 1.25rem; color: var(--color-ivory);">
@@ -221,6 +204,23 @@
               </a>
             </div>
 
+          </div>
+
+          <!-- Right: Compact, Elegant Bottle Visual -->
+          <div class="intro-bottle-wrapper">
+            <div class="intro-bottle-card">
+              <img 
+                src="/assets/images/anagenese-bottle-detail.png" 
+                alt="ANAGÈNESE by VELARI PRIVÉ obsidian flacon detail" 
+                class="intro-bottle-image"
+                loading="lazy"
+              >
+              <!-- Quiet Accent Caption -->
+              <div class="intro-bottle-caption">
+                <span>50ml Obsidian Flacon</span>
+                <span>Calibrated Pipette</span>
+              </div>
+            </div>
           </div>
 
         </div>
