@@ -1153,4 +1153,227 @@
   text-transform: uppercase;
 }
 
+/* ==========================================================================
+   THE SCIENCE: LUXURY BOTANICAL EDITORIAL EXPERIENCE (80% Visual, 20% Text)
+   ========================================================================== */
+.science-hero {
+  position: relative;
+  min-height: 82vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: calc(var(--header-height) + 4rem);
+  padding-bottom: 5rem;
+  overflow: hidden;
+  background-color: var(--color-obsidian);
+}
+
+.science-hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: brightness(0.6) contrast(1.08);
+  transform: scale(1.03);
+  transition: transform 3.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.science-hero:hover .science-hero-bg {
+  transform: scale(1.0);
+}
+
+.science-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 45%, rgba(9, 9, 9, 0.35) 0%, rgba(9, 9, 9, 0.85) 90%),
+              linear-gradient(to bottom, rgba(9,9,9,0.5) 0%, transparent 35%, rgba(9,9,9,0.98) 100%);
+  pointer-events: none;
+}
+
+.science-hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Section 2: Philosophy Two-Column */
+.science-philosophy-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(3rem, 6vw, 6rem);
+  align-items: center;
+}
+
+@media (min-width: 960px) {
+  .science-philosophy-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.science-image-frame {
+  position: relative;
+  border: 1px solid var(--color-silver-border);
+  border-radius: var(--radius-xs);
+  overflow: hidden;
+  background: #111111;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(220, 220, 235, 0.03);
+  transition: border-color var(--transition-normal);
+}
+
+.science-image-frame:hover {
+  border-color: var(--color-silver-border-hover);
+}
+
+.science-image-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  transition: transform 1.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.science-image-frame:hover img {
+  transform: scale(1.03);
+}
+
+/* Section 3: Three Visual Principles */
+.principles-editorial-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2.5rem, 5vw, 3.5rem);
+}
+
+@media (min-width: 768px) {
+  .principles-editorial-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.principle-editorial-item {
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-normal);
+}
+
+.principle-image-wrap {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border: 1px solid var(--color-silver-border);
+  border-radius: var(--radius-xs);
+  overflow: hidden;
+  background: #111111;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.65);
+}
+
+.principle-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 1.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.principle-editorial-item:hover .principle-image-wrap img {
+  transform: scale(1.04);
+}
+
+.principle-num {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  color: var(--color-silver-muted);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.principle-title {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-champagne);
+  margin-bottom: 0.75rem;
+}
+
+.principle-text {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--color-ivory);
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+
+/* Section 4: Formulation Journey */
+.formulation-journey-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+@media (min-width: 860px) {
+  .formulation-journey-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.journey-item {
+  padding: 2.5rem 1.75rem;
+  border-top: 1px solid var(--color-silver-border);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: border-color var(--transition-fast);
+}
+
+.journey-item:hover {
+  border-top-color: var(--color-champagne);
+}
+
+.journey-tag {
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-silver-bright);
+  margin-bottom: 0.85rem;
+  font-weight: 500;
+}
+
+.journey-desc {
+  font-size: 0.9rem;
+  color: var(--color-warm-grey);
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+/* Section 5: Closing Product Showcase */
+.closing-showcase-wrap {
+  max-width: 1020px;
+  margin: 0 auto 3.5rem;
+  border: 1px solid var(--color-silver-border);
+  border-radius: var(--radius-xs);
+  overflow: hidden;
+  background: #0d0d0d;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
+  transition: border-color var(--transition-normal);
+}
+
+.closing-showcase-wrap:hover {
+  border-color: var(--color-silver-border-hover);
+}
+
+.closing-showcase-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
 
