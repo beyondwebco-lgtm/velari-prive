@@ -248,14 +248,39 @@
 
 /* Seamless Film Video */
 .hero-film-video {
-  width: 100%;
-  height: 100%;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
   object-fit: cover;
-  object-position: center;
+  object-position: center center;
   display: block;
-  background: transparent;
+  background-color: #090909;
   border: none;
   outline: none;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+/* Restrained luxury ambient vignette */
+.hero-ambient-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(ellipse at 50% 50%, rgba(9, 9, 9, 0) 40%, rgba(9, 9, 9, 0.45) 75%, #090909 100%);
+}
+
+/* Seamless soft bottom blend into next section */
+.hero-bottom-blend {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: clamp(70px, 14vh, 160px);
+  background: linear-gradient(to top, #090909 0%, rgba(9, 9, 9, 0.75) 40%, transparent 100%);
+  pointer-events: none;
+  z-index: 3;
 }
 
 /* Graceful Fallback Elements */
@@ -286,7 +311,7 @@
 /* Subtle Scroll Cue */
 .hero-scroll-cue {
   position: absolute;
-  bottom: clamp(1.5rem, 3.5vh, 2.8rem);
+  bottom: clamp(1.4rem, 3.8vh, 2.8rem);
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -295,23 +320,36 @@
   gap: 0.65rem;
   z-index: 5;
   pointer-events: auto;
-  transition: opacity 0.3s ease;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
 .hero-scroll-cue-text {
   font-family: var(--font-sans);
-  font-size: 0.65rem;
-  letter-spacing: 0.28em;
+  font-size: clamp(0.58rem, 0.55rem + 0.15vw, 0.68rem);
+  letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--color-silver-muted);
   white-space: nowrap;
+  transition: color var(--transition-fast), letter-spacing var(--transition-fast);
 }
 
 .hero-scroll-cue-indicator {
   width: 1px;
   height: 28px;
-  background: linear-gradient(to bottom, rgba(220, 220, 235, 0.45), rgba(220, 220, 235, 0));
+  background: linear-gradient(to bottom, rgba(220, 220, 235, 0.55), rgba(220, 220, 235, 0));
   animation: heroCuePulse 2.2s ease-in-out infinite;
+  transition: background var(--transition-fast);
+}
+
+.hero-scroll-cue:hover .hero-scroll-cue-text {
+  color: #FFFFFF;
+  letter-spacing: 0.34em;
+}
+
+.hero-scroll-cue:hover .hero-scroll-cue-indicator {
+  background: linear-gradient(to bottom, #FFFFFF, rgba(255, 255, 255, 0));
 }
 
 @keyframes heroCuePulse {
@@ -320,8 +358,60 @@
     transform: scaleY(0.75);
   }
   50% {
-    opacity: 0.9;
+    opacity: 1;
     transform: scaleY(1);
+  }
+}
+
+/* --- MOBILE SPECIFIC ENHANCEMENTS (< 768px) --- */
+@media (max-width: 767px) {
+  .hero-film-video {
+    object-position: center 48%;
+  }
+
+  .hero-scroll-cue {
+    bottom: max(1.2rem, calc(env(safe-area-inset-bottom) + 0.5rem));
+    gap: 0.45rem;
+  }
+
+  .hero-scroll-cue-indicator {
+    height: 22px;
+  }
+
+  .hero-bottom-blend {
+    height: clamp(60px, 12vh, 110px);
+  }
+}
+
+/* --- MOBILE LANDSCAPE / SHORT SCREENS (height < 500px) --- */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero-scroll-cue {
+    bottom: 0.5rem;
+    gap: 0.3rem;
+  }
+
+  .hero-scroll-cue-text {
+    font-size: 0.54rem;
+    letter-spacing: 0.22em;
+  }
+
+  .hero-scroll-cue-indicator {
+    height: 14px;
+  }
+
+  .hero-bottom-blend {
+    height: 50px;
+  }
+}
+
+/* --- ULTRA-WIDE & 4K SCREENS (> 1920px) --- */
+@media (min-width: 1921px) {
+  .hero-ambient-vignette {
+    background: radial-gradient(ellipse at 50% 50%, rgba(9, 9, 9, 0) 35%, rgba(9, 9, 9, 0.55) 70%, #090909 95%);
+  }
+  
+  .hero-bottom-blend {
+    height: clamp(140px, 15vh, 220px);
   }
 }
 

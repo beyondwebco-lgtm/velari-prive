@@ -53,6 +53,8 @@ $theme_uri = get_template_directory_uri();
           poster="<?php echo esc_url($theme_uri . '/assets/images/anagenese-hero-bottle.jpg'); ?>"
           aria-label="ANAGÈNESE luxury elixir film featuring obsidian glass bottle and brushed silver pipette"
         >
+          <source src="<?php echo esc_url($theme_uri . '/assets/videos/hero%20section.mp4'); ?>" type="video/mp4">
+          <source src="<?php echo esc_url($theme_uri . '/assets/videos/hero-section.mp4'); ?>" type="video/mp4">
           <source src="<?php echo esc_url($theme_uri . '/assets/videos/anagenese-hero.mp4'); ?>" type="video/mp4">
           <img 
             src="<?php echo esc_url($theme_uri . '/assets/images/anagenese-hero-bottle.jpg'); ?>" 

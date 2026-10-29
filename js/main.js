@@ -111,17 +111,46 @@
     });
 
     // ------------------------------------------------------------------------
-    // 4. HERO VIDEO AUTOPLAY WITH GRACEFUL FALLBACK
+    // 4. HERO VIDEO AUTOPLAY WITH ROBUST MOBILE HANDLING
     // ------------------------------------------------------------------------
     const heroVideos = document.querySelectorAll('.hero-film-video, video[autoplay]');
     heroVideos.forEach((video) => {
+      video.muted = true;
+      video.defaultMuted = true;
+      video.setAttribute('muted', '');
+      video.setAttribute('playsinline', '');
+      video.setAttribute('webkit-playsinline', '');
+      
       const playPromise = video.play();
       if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          video.closest('.video-container')?.classList.add('playback-fallback');
+        playPromise.catch((err) => {
+          console.warn('Autoplay deferred:', err);
+          const playOnInteraction = () => {
+            video.play().catch(() => {});
+            window.removeEventListener('touchstart', playOnInteraction);
+            window.removeEventListener('click', playOnInteraction);
+            window.removeEventListener('scroll', playOnInteraction);
+          };
+          window.addEventListener('touchstart', playOnInteraction, { once: true, passive: true });
+          window.addEventListener('click', playOnInteraction, { once: true, passive: true });
+          window.addEventListener('scroll', playOnInteraction, { once: true, passive: true });
         });
       }
     });
+
+    // 4B. HERO SCROLL CUE DYNAMIC FADE ON SCROLL
+    const heroScrollCue = document.querySelector('.hero-scroll-cue');
+    if (heroScrollCue) {
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 40) {
+          heroScrollCue.style.opacity = '0';
+          heroScrollCue.style.pointerEvents = 'none';
+        } else {
+          heroScrollCue.style.opacity = '1';
+          heroScrollCue.style.pointerEvents = 'auto';
+        }
+      }, { passive: true });
+    }
 
     // ------------------------------------------------------------------------
     // 5. PERSONAL / PRIVATE DISCOVERY: CONCERN CARDS SELECTION
