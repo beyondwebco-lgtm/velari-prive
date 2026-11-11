@@ -111,8 +111,117 @@
     });
 
     // ------------------------------------------------------------------------
-    // 4. HERO VIDEO AUTOPLAY WITH ROBUST MOBILE HANDLING
+    // 4. HERO VIDEO AUTOPLAY & LOADING PROGRESS BAR CONTROLLER
     // ------------------------------------------------------------------------
+    const heroLoader = document.getElementById('heroVideoLoader');
+    const heroLoaderBar = document.getElementById('heroLoaderBar');
+    const heroLoaderPercent = document.getElementById('heroLoaderPercent');
+    const heroPrimaryVideo = document.querySelector('.hero-film-video');
+
+    if (heroLoader && heroPrimaryVideo) {
+      let currentPercent = 0;
+      let targetPercent = 14; // Initial anticipation
+      let isCompleted = false;
+      let animationFrameId = null;
+
+      const updateUI = () => {
+        if (heroLoaderBar) {
+          heroLoaderBar.style.width = `${currentPercent.toFixed(1)}%`;
+        }
+        if (heroLoaderPercent) {
+          heroLoaderPercent.textContent = `${Math.round(currentPercent)}%`;
+        }
+      };
+
+      const finishLoading = () => {
+        if (isCompleted) return;
+        isCompleted = true;
+        targetPercent = 100;
+        
+        // Attempt play immediately
+        heroPrimaryVideo.play().catch(() => {});
+
+        // Graceful glide to 100%
+        const finishInterval = setInterval(() => {
+          currentPercent += (100 - currentPercent) * 0.35 + 1.2;
+          if (currentPercent >= 100) {
+            currentPercent = 100;
+            updateUI();
+            clearInterval(finishInterval);
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+
+            setTimeout(() => {
+              heroLoader.classList.add('is-loaded');
+              setTimeout(() => {
+                heroLoader.style.display = 'none';
+              }, 900);
+            }, 260);
+          } else {
+            updateUI();
+          }
+        }, 25);
+      };
+
+      // Smooth RAF progression loop
+      const tick = () => {
+        if (!isCompleted) {
+          currentPercent += (targetPercent - currentPercent) * 0.085;
+          updateUI();
+          animationFrameId = requestAnimationFrame(tick);
+        }
+      };
+      animationFrameId = requestAnimationFrame(tick);
+
+      // Listen to buffer and load progression
+      const updateBufferedProgress = () => {
+        if (isCompleted) return;
+        try {
+          if (heroPrimaryVideo.buffered && heroPrimaryVideo.buffered.length > 0) {
+            const bufferedEnd = heroPrimaryVideo.buffered.end(heroPrimaryVideo.buffered.length - 1);
+            const requiredBuffer = Math.min(heroPrimaryVideo.duration || 6, 6);
+            const bufferRatio = Math.min(1, bufferedEnd / requiredBuffer);
+            targetPercent = Math.max(targetPercent, Math.round(20 + bufferRatio * 75));
+          }
+        } catch (e) {}
+      };
+
+      heroPrimaryVideo.addEventListener('progress', updateBufferedProgress);
+      heroPrimaryVideo.addEventListener('loadedmetadata', () => {
+        targetPercent = Math.max(targetPercent, 35);
+      });
+      heroPrimaryVideo.addEventListener('loadeddata', () => {
+        targetPercent = Math.max(targetPercent, 72);
+      });
+      heroPrimaryVideo.addEventListener('canplay', () => {
+        targetPercent = Math.max(targetPercent, 95);
+        setTimeout(finishLoading, 220);
+      });
+      heroPrimaryVideo.addEventListener('canplaythrough', finishLoading);
+      heroPrimaryVideo.addEventListener('playing', finishLoading);
+
+      // Handle already cached / ready video
+      if (heroPrimaryVideo.readyState >= 3) {
+        finishLoading();
+      } else {
+        // Continuous steady progress heartbeat
+        const heartbeat = setInterval(() => {
+          if (isCompleted) {
+            clearInterval(heartbeat);
+            return;
+          }
+          if (targetPercent < 90) {
+            targetPercent += 3.5;
+          }
+        }, 160);
+
+        // Fail-safe timeout ensures the site is never blocked on restricted mobile networks
+        setTimeout(() => {
+          clearInterval(heartbeat);
+          finishLoading();
+        }, 3800);
+      }
+    }
+
     const heroVideos = document.querySelectorAll('.hero-film-video, video[autoplay]');
     heroVideos.forEach((video) => {
       video.muted = true;

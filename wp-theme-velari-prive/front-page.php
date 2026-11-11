@@ -50,7 +50,7 @@ $theme_uri = get_template_directory_uri();
           loop 
           playsinline 
           preload="auto"
-          poster="<?php echo esc_url($theme_uri . '/assets/images/anagenese-hero-bottle.jpg'); ?>"
+          poster="<?php echo esc_url($theme_uri . '/assets/images/hero-video-poster.jpg'); ?>"
           aria-label="ANAGÈNESE luxury elixir film featuring obsidian glass bottle and brushed silver pipette"
         >
           <source src="<?php echo esc_url($theme_uri . '/assets/videos/hero%20section.mp4'); ?>" type="video/mp4">

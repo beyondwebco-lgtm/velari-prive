@@ -100,21 +100,37 @@
          ====================================================================== -->
     <section class="section section-hero" aria-label="VELARI PRIVÉ Cinematic Film">
       <div class="hero-video-container">
+        <!-- Hero Video Loading Progress Overlay -->
+        <div class="hero-video-loader" id="heroVideoLoader" aria-live="polite" aria-label="Loading cinematic film">
+          <div class="hero-loader-content">
+            <div class="hero-loader-brand">
+              <span class="hero-loader-brand-title">VELARI PRIVÉ</span>
+              <span class="hero-loader-brand-sub">Haute Beauté</span>
+            </div>
+            <div class="hero-loader-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+              <div class="hero-loader-bar" id="heroLoaderBar"></div>
+            </div>
+            <div class="hero-loader-status">
+              <span class="hero-loader-label">INITIALIZING FILM</span>
+              <span class="hero-loader-percent" id="heroLoaderPercent">0%</span>
+            </div>
+          </div>
+        </div>
+
         <video 
           class="hero-film-video" 
-          src="/assets/videos/hero%20section.mp4"
+          src="/assets/videos/hero-section.mp4"
           autoplay 
           muted 
           loop 
           playsinline 
           webkit-playsinline
           preload="auto"
-          poster="/assets/images/anagenese-hero-bottle.jpg"
-          aria-label="ANAGÈNESE by VELARI PRIVÉ Haute Beauté Scalp Care Elixir film"
+          poster="/assets/images/hero-video-poster.jpg"
+          aria-label="VELARI PRIVÉ Haute Beauté film presentation"
         >
-          <source src="/assets/videos/hero%20section.mp4" type="video/mp4">
           <source src="/assets/videos/hero-section.mp4" type="video/mp4">
-          <source src="/assets/videos/hero section.mp4" type="video/mp4">
+          <source src="/assets/videos/hero%20section.mp4" type="video/mp4">
         </video>
         <!-- Restrained luxury ambient vignette for ultra-wide and large displays -->
         <div class="hero-ambient-vignette" aria-hidden="true"></div>
