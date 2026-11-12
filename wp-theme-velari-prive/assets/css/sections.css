@@ -1359,6 +1359,95 @@
   transform: scale(1.03);
 }
 
+/* --------------------------------------------------------------------------
+   SECTION D: THE DAILY CEREMONY / RITUAL SPLIT LAYOUT
+   -------------------------------------------------------------------------- */
+.ritual-split-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: center;
+  max-width: 1220px;
+  margin: 0 auto;
+}
+
+@media (min-width: 960px) {
+  .ritual-split-layout {
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2.5rem, 5vw, 4.5rem);
+  }
+}
+
+.ritual-steps-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.ritual-step-card {
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ritual-step-header {
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+  margin-bottom: 0.75rem;
+}
+
+.ritual-step-num {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  color: var(--color-silver-muted);
+  line-height: 1;
+  min-width: 2.2rem;
+}
+
+.ritual-step-footer {
+  margin-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 0.65rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-champagne);
+}
+
+.ritual-media-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.ritual-media-card {
+  width: 100%;
+  max-width: 580px;
+  border: 1px solid rgba(212, 185, 130, 0.22);
+  border-radius: var(--radius-xs);
+  overflow: hidden;
+  background: #0a0a0a;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 40px rgba(212, 185, 130, 0.06);
+  transition: transform var(--transition-normal), border-color var(--transition-fast), box-shadow var(--transition-normal);
+}
+
+.ritual-media-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(212, 185, 130, 0.45);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.95), 0 0 45px rgba(212, 185, 130, 0.1);
+}
+
+.ritual-media-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+
 /* ==========================================================================
    THE SCIENCE: LUXURY BOTANICAL EDITORIAL EXPERIENCE (80% Visual, 20% Text)
    ========================================================================== */
