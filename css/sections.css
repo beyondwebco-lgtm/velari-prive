@@ -1448,6 +1448,58 @@
   display: block;
 }
 
+/* --------------------------------------------------------------------------
+   SECTION F: PERSONAL DISCOVERY CAMPAIGN GALLERY (4-CARD EDITORIAL STRIP)
+   -------------------------------------------------------------------------- */
+.discovery-campaign-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  max-width: 1240px;
+  margin: 0 auto 3rem;
+}
+
+@media (min-width: 560px) {
+  .discovery-campaign-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .discovery-campaign-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.discovery-campaign-card {
+  width: 100%;
+  border: 1px solid rgba(212, 185, 130, 0.2);
+  border-radius: var(--radius-xs);
+  overflow: hidden;
+  background: #0a0a0a;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 30px rgba(212, 185, 130, 0.04);
+  transition: transform var(--transition-normal), border-color var(--transition-fast), box-shadow var(--transition-normal);
+}
+
+.discovery-campaign-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(212, 185, 130, 0.45);
+  box-shadow: 0 26px 65px rgba(0, 0, 0, 0.95), 0 0 40px rgba(212, 185, 130, 0.1);
+}
+
+.discovery-campaign-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.discovery-campaign-card:hover .discovery-campaign-image {
+  transform: scale(1.03);
+}
+
 /* ==========================================================================
    THE SCIENCE: LUXURY BOTANICAL EDITORIAL EXPERIENCE (80% Visual, 20% Text)
    ========================================================================== */
