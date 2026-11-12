@@ -1471,6 +1471,20 @@
   }
 }
 
+.discovery-trio-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1rem, 2.2vw, 1.75rem);
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .discovery-trio-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 .discovery-campaign-card {
   width: 100%;
   border: 1px solid rgba(212, 185, 130, 0.2);
