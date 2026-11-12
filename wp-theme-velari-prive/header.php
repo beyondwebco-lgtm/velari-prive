@@ -21,6 +21,7 @@
     <a href="<?php echo esc_url(home_url('/')); ?>" class="brand-wordmark" aria-label="VELARI PRIVÉ Home">
       <span class="brand-title">VELARI PRIVÉ</span>
       <span class="brand-sub">Haute Beauté Dermaceutique</span>
+      <span class="brand-backing">Backed by 36ausbiotech</span>
     </a>
 
     <!-- Desktop Navigation -->

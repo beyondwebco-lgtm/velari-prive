@@ -99,6 +99,16 @@
   margin-top: 2px;
 }
 
+.brand-wordmark .brand-backing {
+  font-family: var(--font-sans);
+  font-size: 0.5rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-champagne);
+  margin-top: 3px;
+  opacity: 0.88;
+}
+
 /* DESKTOP NAV */
 .desktop-nav {
   display: none;
