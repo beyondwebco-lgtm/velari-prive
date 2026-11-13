@@ -363,7 +363,18 @@
   letter-spacing: 0.35em;
   text-transform: uppercase;
   color: var(--color-silver-muted);
+  margin-bottom: 0.45rem;
+}
+
+.footer-brand .brand-backing {
+  font-family: var(--font-sans);
+  font-size: 0.58rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-champagne);
   margin-bottom: 1.5rem;
+  opacity: 0.9;
+  display: block;
 }
 
 .footer-desc {

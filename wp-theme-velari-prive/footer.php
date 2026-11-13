@@ -11,6 +11,7 @@
       <div class="footer-brand">
         <div class="brand-title">VELARI PRIVÉ</div>
         <div class="brand-sub">Haute Beauté Dermaceutique</div>
+        <div class="brand-backing">Backed by 36ausbiotech</div>
         <p class="footer-desc">
           An international luxury house celebrating considered beauty, Australian-led formulation vision, and meticulous precision manufacturing.
         </p>

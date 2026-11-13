@@ -722,3 +722,333 @@
   transform: translateY(-1px);
 }
 
+/* ==========================================================================
+   VELARI PRIVÉ — GLOBAL LUXURY IMAGE INTERACTION & FULLSCREEN LIGHTBOX
+   ========================================================================== */
+
+/* 1. Zoomable Image Container & Card Hover System */
+.velari-zoomable {
+  position: relative;
+  cursor: zoom-in;
+  overflow: hidden;
+  border-radius: var(--radius-xs);
+  display: block;
+}
+
+.velari-zoomable img {
+  transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1), filter 0.55s ease;
+  will-change: transform, filter;
+  display: block;
+  width: 100%;
+}
+
+.velari-zoomable:hover img {
+  transform: scale(1.04);
+  filter: brightness(1.06) contrast(1.02);
+}
+
+/* Subtle editorial ambient overlay on hover */
+.velari-zoomable::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(224, 210, 195, 0.08) 0%, rgba(0, 0, 0, 0.28) 100%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.velari-zoomable:hover::after {
+  opacity: 1;
+}
+
+/* Minimal Luxury Expand Badge */
+.velari-zoom-badge {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(9, 9, 11, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(220, 220, 235, 0.38);
+  color: var(--color-champagne-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(8px) scale(0.9);
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.65), 0 0 15px rgba(224, 210, 195, 0.08);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.velari-zoomable:hover .velari-zoom-badge {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Smooth harmony with card classes */
+.discovery-campaign-card.velari-zoomable,
+.intro-gallery-card.velari-zoomable,
+.principle-image-wrap.velari-zoomable,
+.editorial-revelation-card.velari-zoomable,
+.ritual-media-frame.velari-zoomable,
+.science-flacon-card.velari-zoomable,
+.exclusive-coffret-card.velari-zoomable {
+  cursor: zoom-in;
+}
+
+/* 2. Fullscreen Luxury Lightbox Modal */
+.velari-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s ease;
+  user-select: none;
+  -webkit-user-select: none;
+  outline: none;
+}
+
+.velari-lightbox.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Ultra-Deep Blurred Backdrop */
+.velari-lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 5, 7, 0.94);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  z-index: 1;
+}
+
+/* Lightbox Header Bar */
+.velari-lightbox-header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem clamp(1.25rem, 3.5vw, 3rem);
+  width: 100%;
+}
+
+.velari-lightbox-counter {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  color: var(--color-champagne);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.velari-lightbox-brand {
+  font-family: var(--font-serif-display);
+  font-size: 0.76rem;
+  letter-spacing: 0.34em;
+  color: var(--color-silver-muted);
+  text-transform: uppercase;
+}
+
+.velari-lightbox-close {
+  background: rgba(18, 18, 22, 0.75);
+  border: 1px solid rgba(220, 220, 235, 0.25);
+  color: var(--color-ivory);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+}
+
+.velari-lightbox-close:hover {
+  background: #FFFFFF;
+  border-color: #FFFFFF;
+  color: #000000;
+  transform: rotate(90deg) scale(1.05);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+}
+
+/* Lightbox Viewport & Stage */
+.velari-lightbox-viewport {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem clamp(1rem, 2.5vw, 2.5rem);
+  width: 100%;
+  overflow: hidden;
+}
+
+.velari-lightbox-stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 90vw;
+  max-height: 74vh;
+  margin: 0 auto;
+}
+
+.velari-lightbox-image {
+  max-width: 100%;
+  max-height: 74vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  border-radius: var(--radius-xs);
+  border: 1px solid rgba(220, 220, 235, 0.16);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.95), 0 0 50px rgba(224, 210, 195, 0.06);
+  opacity: 0;
+  transform: scale(0.94);
+  transition: opacity 0.38s cubic-bezier(0.16, 1, 0.3, 1), transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.velari-lightbox.active .velari-lightbox-image {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Navigation Buttons */
+.velari-lightbox-nav {
+  background: rgba(18, 18, 22, 0.75);
+  border: 1px solid rgba(220, 220, 235, 0.22);
+  color: var(--color-champagne-light);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  flex-shrink: 0;
+  z-index: 12;
+}
+
+.velari-lightbox-nav:hover {
+  background: rgba(224, 210, 195, 0.15);
+  border-color: var(--color-champagne);
+  color: #FFFFFF;
+  box-shadow: 0 0 24px rgba(224, 210, 195, 0.25);
+  transform: scale(1.08);
+}
+
+.velari-lightbox-nav.prev:hover {
+  transform: translateX(-3px) scale(1.08);
+}
+
+.velari-lightbox-nav.next:hover {
+  transform: translateX(3px) scale(1.08);
+}
+
+.velari-lightbox-nav.disabled {
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+/* Lightbox Footer Bar */
+.velari-lightbox-footer {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem clamp(1.25rem, 3.5vw, 3rem);
+  width: 100%;
+  gap: 1.5rem;
+}
+
+.velari-lightbox-caption {
+  font-family: var(--font-serif);
+  font-size: clamp(0.85rem, 1.2vw, 1.05rem);
+  color: var(--color-champagne-light);
+  font-weight: 300;
+  max-width: 750px;
+  line-height: 1.5;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.velari-lightbox-hints {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  color: var(--color-silver-muted);
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.velari-lightbox-hints kbd {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+  padding: 0.15rem 0.45rem;
+  font-size: 0.64rem;
+  color: var(--color-warm-white);
+  font-family: var(--font-sans);
+}
+
+/* Responsive Lightbox Layout */
+@media (max-width: 768px) {
+  .velari-lightbox-header {
+    padding: 1rem 1.25rem;
+  }
+  .velari-lightbox-brand {
+    display: none;
+  }
+  .velari-lightbox-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem 1.25rem;
+    gap: 0.75rem;
+  }
+  .velari-lightbox-hints {
+    display: none;
+  }
+  .velari-lightbox-stage {
+    max-height: 65vh;
+  }
+  .velari-lightbox-image {
+    max-height: 65vh;
+  }
+  .velari-lightbox-nav {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .velari-lightbox,
+  .velari-lightbox-image,
+  .velari-zoomable img,
+  .velari-zoom-badge {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+

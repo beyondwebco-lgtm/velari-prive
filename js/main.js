@@ -578,5 +578,339 @@
         revelationSection.classList.add('revealed');
       }
     }
+
+    // ------------------------------------------------------------------------
+    // 11. GLOBAL LUXURY IMAGE INTERACTION & FULLSCREEN LIGHTBOX
+    // ------------------------------------------------------------------------
+    initLuxuryLightbox();
+
+    function initLuxuryLightbox() {
+      const containerSelectors = [
+        '.editorial-revelation-card',
+        '.editorial-revelation-media',
+        '.intro-gallery-card',
+        '.ritual-media-card',
+        '.ritual-media-frame',
+        '.discovery-campaign-card',
+        '.principle-image-wrap',
+        '.science-flacon-card',
+        '.exclusive-coffret-card',
+        '.velari-zoomable',
+        '[data-lightbox]'
+      ];
+
+      // Identify all eligible content image containers without duplicating images
+      const rawContainers = Array.from(document.querySelectorAll(containerSelectors.join(', ')));
+      if (!rawContainers.length) return;
+
+      const seenImages = new Set();
+      const containers = [];
+
+      rawContainers.forEach((container) => {
+        const img = container.tagName === 'IMG' ? container : container.querySelector('img');
+        if (!img || seenImages.has(img)) return;
+
+        // Skip decorative backgrounds, logos, or icon images
+        if (
+          img.classList.contains('science-hero-bg') ||
+          img.closest('.brand-wordmark') ||
+          img.closest('header') ||
+          img.closest('.site-nav')
+        ) {
+          return;
+        }
+
+        seenImages.add(img);
+        containers.push(container);
+      });
+
+      if (!containers.length) return;
+
+      const galleryItems = [];
+
+      containers.forEach((container) => {
+        const img = container.tagName === 'IMG' ? container : container.querySelector('img');
+        if (!img) return;
+
+        // Apply zoomable container class
+        container.classList.add('velari-zoomable');
+
+        // Add minimal luxury expand badge if not present
+        if (!container.querySelector('.velari-zoom-badge')) {
+          const badge = document.createElement('div');
+          badge.className = 'velari-zoom-badge';
+          badge.setAttribute('aria-hidden', 'true');
+          badge.innerHTML = `
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 2H14M14 2V6M14 2L9 7M6 14H2M2 14V10M2 14L7 9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          `;
+          container.appendChild(badge);
+        }
+
+        const itemIndex = galleryItems.length;
+        const captionText = img.getAttribute('alt') || 'ANAGÈNESE by VELARI PRIVÉ — Haute Beauté';
+
+        galleryItems.push({
+          src: img.currentSrc || img.src,
+          alt: img.getAttribute('alt') || '',
+          caption: captionText,
+          element: container
+        });
+
+        // Click to open fullscreen
+        container.addEventListener('click', (e) => {
+          // Avoid triggering if clicking an actual link inside the container
+          if (e.target.closest('a') && e.target.closest('a') !== container) return;
+          e.preventDefault();
+          openLightbox(itemIndex);
+        });
+
+        // Keyboard accessibility on container (Enter / Space opens)
+        if (!container.getAttribute('tabindex') && container.tagName !== 'BUTTON' && container.tagName !== 'A') {
+          container.setAttribute('tabindex', '0');
+          container.setAttribute('role', 'button');
+          container.setAttribute('aria-label', `View ${img.getAttribute('alt') || 'image'} in fullscreen`);
+          container.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              openLightbox(itemIndex);
+            }
+          });
+        }
+      });
+
+      if (!galleryItems.length) return;
+
+      // ----------------------------------------------------------------------
+      // Build & Inject Single Global Lightbox Modal
+      // ----------------------------------------------------------------------
+      let lightbox = document.getElementById('velari-lightbox');
+      if (!lightbox) {
+        lightbox = document.createElement('div');
+        lightbox.id = 'velari-lightbox';
+        lightbox.className = 'velari-lightbox';
+        lightbox.setAttribute('role', 'dialog');
+        lightbox.setAttribute('aria-modal', 'true');
+        lightbox.setAttribute('aria-label', 'Image Fullscreen View');
+        lightbox.setAttribute('tabindex', '-1');
+
+        lightbox.innerHTML = `
+          <div class="velari-lightbox-backdrop" aria-hidden="true"></div>
+          <div class="velari-lightbox-header">
+            <div class="velari-lightbox-counter" id="velari-lightbox-counter">01 / 01</div>
+            <div class="velari-lightbox-brand">VELARI PRIVÉ · HAUTE BEAUTÉ</div>
+            <button type="button" class="velari-lightbox-close" id="velari-lightbox-close" aria-label="Close fullscreen view">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3.5 3.5L14.5 14.5M14.5 3.5L3.5 14.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+          <div class="velari-lightbox-viewport" id="velari-lightbox-viewport">
+            <button type="button" class="velari-lightbox-nav prev" id="velari-lightbox-prev" aria-label="Previous image">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 19L8 12L15 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="velari-lightbox-stage" id="velari-lightbox-stage">
+              <img src="" alt="" class="velari-lightbox-image" id="velari-lightbox-img">
+            </div>
+            <button type="button" class="velari-lightbox-nav next" id="velari-lightbox-next" aria-label="Next image">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+          <div class="velari-lightbox-footer">
+            <div class="velari-lightbox-caption" id="velari-lightbox-caption"></div>
+            <div class="velari-lightbox-hints">
+              <span><kbd>ESC</kbd> Close</span>
+              <span><kbd>←</kbd> <kbd>→</kbd> Navigate</span>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(lightbox);
+      }
+
+      const backdrop = lightbox.querySelector('.velari-lightbox-backdrop');
+      const closeBtn = document.getElementById('velari-lightbox-close');
+      const prevBtn = document.getElementById('velari-lightbox-prev');
+      const nextBtn = document.getElementById('velari-lightbox-next');
+      const imgElem = document.getElementById('velari-lightbox-img');
+      const counterElem = document.getElementById('velari-lightbox-counter');
+      const captionElem = document.getElementById('velari-lightbox-caption');
+      const viewport = document.getElementById('velari-lightbox-viewport');
+
+      let currentIndex = 0;
+      let lastFocusedElement = null;
+
+      function updateLightboxView(index, smoothTransition = false) {
+        currentIndex = (index + galleryItems.length) % galleryItems.length;
+        const item = galleryItems[currentIndex];
+
+        if (smoothTransition) {
+          imgElem.style.opacity = '0';
+          imgElem.style.transform = 'scale(0.96)';
+          setTimeout(() => {
+            imgElem.src = item.src;
+            imgElem.alt = item.alt;
+            counterElem.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(galleryItems.length).padStart(2, '0')}`;
+            captionElem.textContent = item.caption;
+            imgElem.style.opacity = '1';
+            imgElem.style.transform = 'scale(1)';
+          }, 180);
+        } else {
+          imgElem.src = item.src;
+          imgElem.alt = item.alt;
+          counterElem.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(galleryItems.length).padStart(2, '0')}`;
+          captionElem.textContent = item.caption;
+        }
+
+        // Hide navigation if only one image
+        if (galleryItems.length <= 1) {
+          prevBtn.style.display = 'none';
+          nextBtn.style.display = 'none';
+        } else {
+          prevBtn.style.display = 'flex';
+          nextBtn.style.display = 'flex';
+        }
+      }
+
+      function openLightbox(index) {
+        lastFocusedElement = document.activeElement;
+        updateLightboxView(index, false);
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        lightbox.focus();
+
+        window.velariTrackEvent('lightbox_opened', {
+          image_src: galleryItems[currentIndex].src,
+          total_images: galleryItems.length
+        });
+      }
+
+      function closeLightbox() {
+        if (!lightbox.classList.contains('active')) return;
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+          lastFocusedElement.focus();
+        }
+      }
+
+      function showNext() {
+        if (galleryItems.length <= 1) return;
+        updateLightboxView(currentIndex + 1, true);
+      }
+
+      function showPrev() {
+        if (galleryItems.length <= 1) return;
+        updateLightboxView(currentIndex - 1, true);
+      }
+
+      // Close events
+      closeBtn.addEventListener('click', closeLightbox);
+      backdrop.addEventListener('click', closeLightbox);
+
+      // Nav click events
+      nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showNext();
+      });
+      prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showPrev();
+      });
+
+      // Prevent closing when clicking on the image stage
+      viewport.addEventListener('click', (e) => {
+        if (e.target === viewport || e.target.closest('.velari-lightbox-stage')) {
+          if (e.target === viewport) closeLightbox();
+        }
+      });
+
+      // Keyboard Controls & Focus Trap
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          closeLightbox();
+        } else if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          showNext();
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          showPrev();
+        } else if (e.key === 'Tab') {
+          // Trap focus inside lightbox
+          const focusable = [closeBtn, prevBtn, nextBtn].filter((b) => b && b.style.display !== 'none');
+          if (!focusable.length) return;
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+
+          if (e.shiftKey) {
+            if (document.activeElement === first) {
+              e.preventDefault();
+              last.focus();
+            }
+          } else {
+            if (document.activeElement === last) {
+              e.preventDefault();
+              first.focus();
+            }
+          }
+        }
+      });
+
+      // Touch & Mobile Swipe Gestures
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let touchEndX = 0;
+      let touchEndY = 0;
+
+      viewport.addEventListener(
+        'touchstart',
+        (e) => {
+          if (e.touches.length === 1) {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+          }
+        },
+        { passive: true }
+      );
+
+      viewport.addEventListener(
+        'touchend',
+        (e) => {
+          if (e.changedTouches.length === 1) {
+            touchEndX = e.changedTouches[0].clientX;
+            touchEndY = e.changedTouches[0].clientY;
+            handleSwipe();
+          }
+        },
+        { passive: true }
+      );
+
+      function handleSwipe() {
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = touchEndY - touchStartY;
+        const absX = Math.abs(deltaX);
+        const absY = Math.abs(deltaY);
+
+        // Horizontal swipe (next / prev)
+        if (absX > 45 && absX > absY) {
+          if (deltaX < 0) {
+            showNext();
+          } else {
+            showPrev();
+          }
+        }
+        // Vertical swipe down (dismiss lightbox)
+        else if (deltaY > 80 && absY > absX) {
+          closeLightbox();
+        }
+      }
+    }
   });
 })();
