@@ -2,4 +2,5 @@ node_modules/
 dist/
 .DS_Store
 *.log
+raw-assets/
 Grey White Film Journal Animated Video Intro*.mp4
