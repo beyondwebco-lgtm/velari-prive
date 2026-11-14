@@ -1125,11 +1125,45 @@
    Ultra-luxury French perfume / skincare campaign aesthetic
    -------------------------------------------------------------------------- */
 .editorial-revelation-section {
-  background-color: #090909;
+  background-color: #000000;
+  background: 
+    radial-gradient(ellipse 70% 90% at 75% 50%, rgba(212, 175, 106, 0.28) 0%, rgba(212, 175, 106, 0.1) 50%, transparent 80%),
+    linear-gradient(90deg, 
+      #000000 0%, 
+      #000000 16%, 
+      #090703 24%, 
+      #151106 32%, 
+      #29200c 40%, 
+      #473716 48%, 
+      #715825 56%, 
+      #a3813e 64%, 
+      #c8a55e 72%, 
+      #d4af6a 78%, 
+      #d4af6a 100%
+    );
   padding-top: clamp(4.5rem, 8vw, 8.5rem);
   padding-bottom: clamp(4.5rem, 8vw, 8.5rem);
   position: relative;
   overflow: hidden;
+}
+
+@media (max-width: 991px) {
+  .editorial-revelation-section {
+    background: 
+      radial-gradient(ellipse 85% 60% at 50% 82%, rgba(212, 175, 106, 0.22) 0%, transparent 75%),
+      linear-gradient(180deg, 
+        #000000 0%, 
+        #000000 18%, 
+        #0c0904 28%, 
+        #221a0a 38%, 
+        #463717 48%, 
+        #785e2a 58%, 
+        #ad8b46 68%, 
+        #cbab65 76%, 
+        #d4af6a 82%, 
+        #d4af6a 100%
+      );
+  }
 }
 
 .editorial-revelation-container {
@@ -1255,22 +1289,38 @@
   width: 100%;
   max-width: clamp(340px, 46vw, 600px);
   aspect-ratio: 1 / 1;
-  border: 1px solid rgba(212, 185, 130, 0.22);
-  border-radius: var(--radius-xs);
-  overflow: hidden;
-  background: #0a0a0a;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 40px rgba(212, 185, 130, 0.06);
-  transition: transform var(--transition-normal), border-color var(--transition-fast), box-shadow var(--transition-normal);
+  border: none;
+  background: transparent;
+  box-shadow: none;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  transition: transform var(--transition-normal);
+  filter: drop-shadow(0 20px 50px rgba(45, 32, 10, 0.42));
+}
+
+/* Ethereal golden atmospheric aura behind the image */
+.editorial-revelation-card::before {
+  content: '';
+  position: absolute;
+  inset: 4%;
+  background: radial-gradient(circle at 50% 50%, rgba(212, 175, 106, 0.45) 0%, rgba(140, 105, 45, 0.25) 48%, transparent 72%);
+  filter: blur(28px);
+  z-index: 0;
+  opacity: 0.85;
+  pointer-events: none;
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
 .editorial-revelation-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(212, 185, 130, 0.5);
-  box-shadow: 0 28px 75px rgba(0, 0, 0, 0.95), 0 0 45px rgba(212, 185, 130, 0.12);
+  transform: translateY(-4px) scale(1.015);
+  filter: drop-shadow(0 26px 65px rgba(45, 32, 10, 0.55));
+}
+
+.editorial-revelation-card:hover::before {
+  opacity: 1;
+  transform: scale(1.05);
 }
 
 .editorial-revelation-image {
@@ -1281,13 +1331,19 @@
   display: block;
   transform: scale(1.04);
   opacity: 0;
+  position: relative;
+  z-index: 1;
   transition: opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.6s ease;
   will-change: transform, opacity;
+  border-radius: var(--radius-sm);
+  /* Feathered blurred edge that dissolves and merges seamlessly into the background */
+  -webkit-mask-image: radial-gradient(ellipse 86% 86% at 50% 50%, #000000 48%, rgba(0, 0, 0, 0.88) 64%, rgba(0, 0, 0, 0.45) 80%, rgba(0, 0, 0, 0.1) 92%, transparent 100%);
+  mask-image: radial-gradient(ellipse 86% 86% at 50% 50%, #000000 48%, rgba(0, 0, 0, 0.88) 64%, rgba(0, 0, 0, 0.45) 80%, rgba(0, 0, 0, 0.1) 92%, transparent 100%);
 }
 
 .editorial-revelation-card:hover .editorial-revelation-image {
-  transform: scale(1.04);
-  filter: brightness(1.06) contrast(1.02);
+  transform: scale(1.03);
+  filter: brightness(1.05) contrast(1.02);
 }
 
 /* Scroll Reveal Transitions */
@@ -1399,16 +1455,16 @@
 
 @media (min-width: 992px) {
   .intro-experience-layout {
-    grid-template-columns: minmax(320px, 420px) 1fr;
-    gap: clamp(3rem, 5vw, 5.5rem);
+    grid-template-columns: minmax(300px, 390px) 1.25fr;
+    gap: clamp(2.5rem, 4vw, 4.5rem);
     align-items: center;
   }
 }
 
 @media (min-width: 1200px) {
   .intro-experience-layout {
-    grid-template-columns: minmax(360px, 440px) 1fr;
-    gap: clamp(3.5rem, 5vw, 6rem);
+    grid-template-columns: minmax(320px, 410px) 1.3fr;
+    gap: clamp(2.75rem, 4.5vw, 5rem);
   }
 }
 
@@ -1417,28 +1473,36 @@
   grid-template-columns: 1fr;
   gap: clamp(1.25rem, 2.5vw, 1.75rem);
   width: 100%;
-  align-items: center;
+  align-items: stretch;
 }
 
 @media (min-width: 560px) {
   .intro-gallery-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 2381fr 3601fr;
+    gap: clamp(1rem, 2vw, 1.5rem);
+    align-items: stretch;
   }
 }
 
 .intro-gallery-card {
   width: 100%;
-  aspect-ratio: 1 / 1;
   border: 1px solid var(--color-silver-border);
   border-radius: var(--radius-xs);
   overflow: hidden;
   background: #090909;
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.85), 0 0 25px rgba(220, 220, 235, 0.03);
   transition: transform var(--transition-normal), border-color var(--transition-fast), box-shadow var(--transition-normal);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
   position: relative;
+}
+
+/* Individual exact aspect ratios matching each image's native dimensions */
+.intro-gallery-card:first-child {
+  aspect-ratio: 2381 / 3601;
+}
+
+.intro-gallery-card:nth-child(2) {
+  aspect-ratio: 1 / 1;
 }
 
 .intro-gallery-card:hover {
@@ -1450,11 +1514,20 @@
 .intro-gallery-image {
   width: 100%;
   height: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: contain;
   display: block;
+  object-fit: cover;
   background: #090909;
   transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.intro-gallery-card:first-child .intro-gallery-image {
+  aspect-ratio: 2381 / 3601;
+  object-position: center center;
+}
+
+.intro-gallery-card:nth-child(2) .intro-gallery-image {
+  aspect-ratio: 1 / 1;
+  object-position: center center;
 }
 
 .intro-gallery-card:hover .intro-gallery-image {

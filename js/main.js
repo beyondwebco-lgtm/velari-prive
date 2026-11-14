@@ -226,9 +226,17 @@
     heroVideos.forEach((video) => {
       video.muted = true;
       video.defaultMuted = true;
+      video.loop = true;
       video.setAttribute('muted', '');
       video.setAttribute('playsinline', '');
       video.setAttribute('webkit-playsinline', '');
+      video.setAttribute('loop', '');
+      
+      // Explicit fail-safe loop handler: guarantees endless playback across all engines
+      video.addEventListener('ended', () => {
+        video.currentTime = 0;
+        video.play().catch(() => {});
+      });
       
       const playPromise = video.play();
       if (playPromise !== undefined) {
