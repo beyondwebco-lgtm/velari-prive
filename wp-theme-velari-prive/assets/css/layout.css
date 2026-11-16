@@ -3,13 +3,40 @@
    Minimal, beautifully spaced, responsive, unobtrusive luxury layout
    ========================================================================== */
 
+/* --------------------------------------------------------------------------
+   RESPONSIVE CONTAINER SYSTEM
+   Mobile (320px-575px): 12-16px padding
+   Tablet (576px-991px): 20-24px padding
+   Desktop (992px+): 32-44px padding
+   -------------------------------------------------------------------------- */
 .container {
   width: 100%;
   max-width: var(--container-max);
   margin-left: auto;
   margin-right: auto;
-  padding-left: clamp(1.25rem, 3vw, 3.5rem);
-  padding-right: clamp(1.25rem, 3vw, 3.5rem);
+  padding-left: clamp(0.85rem, 3.8vw, 1rem);
+  padding-right: clamp(0.85rem, 3.8vw, 1rem);
+}
+
+@media (min-width: 576px) {
+  .container {
+    padding-left: clamp(1.25rem, 2.5vw, 1.5rem);
+    padding-right: clamp(1.25rem, 2.5vw, 1.5rem);
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    padding-left: clamp(2rem, 2.8vw, 2.75rem);
+    padding-right: clamp(2rem, 2.8vw, 2.75rem);
+  }
+}
+
+@media (min-width: 1440px) {
+  .container {
+    padding-left: 2.75rem;
+    padding-right: 2.75rem;
+  }
 }
 
 .container-editorial {
@@ -17,8 +44,22 @@
   max-width: var(--container-editorial);
   margin-left: auto;
   margin-right: auto;
-  padding-left: clamp(1.25rem, 3vw, 3rem);
-  padding-right: clamp(1.25rem, 3vw, 3rem);
+  padding-left: clamp(0.85rem, 3.8vw, 1rem);
+  padding-right: clamp(0.85rem, 3.8vw, 1rem);
+}
+
+@media (min-width: 576px) {
+  .container-editorial {
+    padding-left: clamp(1.25rem, 2.5vw, 1.5rem);
+    padding-right: clamp(1.25rem, 2.5vw, 1.5rem);
+  }
+}
+
+@media (min-width: 992px) {
+  .container-editorial {
+    padding-left: clamp(2rem, 2.8vw, 2.75rem);
+    padding-right: clamp(2rem, 2.8vw, 2.75rem);
+  }
 }
 
 .container-narrow {
@@ -26,15 +67,39 @@
   max-width: var(--container-narrow);
   margin-left: auto;
   margin-right: auto;
-  padding-left: clamp(1.25rem, 3vw, 2.5rem);
-  padding-right: clamp(1.25rem, 3vw, 2.5rem);
+  padding-left: clamp(0.85rem, 3.8vw, 1rem);
+  padding-right: clamp(0.85rem, 3.8vw, 1rem);
 }
 
-/* SECTION PADDING */
+@media (min-width: 576px) {
+  .container-narrow {
+    padding-left: clamp(1.25rem, 2.5vw, 1.5rem);
+    padding-right: clamp(1.25rem, 2.5vw, 1.5rem);
+  }
+}
+
+@media (min-width: 992px) {
+  .container-narrow {
+    padding-left: clamp(2rem, 2.8vw, 2.75rem);
+    padding-right: clamp(2rem, 2.8vw, 2.75rem);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   SECTION PADDING — COMPACT, HARMONIZED & LUXURIOUS
+   Eliminates excessive black gaps while preserving premium breathing room
+   -------------------------------------------------------------------------- */
 .section {
   position: relative;
-  padding-top: clamp(4.5rem, 8vw, 8.5rem);
-  padding-bottom: clamp(4.5rem, 8vw, 8.5rem);
+  padding-top: clamp(2.75rem, 5vw, 5rem);
+  padding-bottom: clamp(2.75rem, 5vw, 5rem);
+}
+
+@media (max-width: 767px) {
+  .section {
+    padding-top: clamp(2rem, 4.5vw, 3.25rem);
+    padding-bottom: clamp(2rem, 4.5vw, 3.25rem);
+  }
 }
 
 .section-hero {
@@ -44,6 +109,12 @@
 }
 
 /* HEADER & NAVIGATION */
+@media (max-width: 767px) {
+  :root {
+    --header-height: var(--header-height-mobile);
+  }
+}
+
 .site-header {
   position: fixed;
   top: 0;
@@ -107,6 +178,20 @@
   color: var(--color-champagne);
   margin-top: 3px;
   opacity: 0.88;
+}
+
+@media (max-width: 360px) {
+  .brand-wordmark .brand-title {
+    font-size: 1rem;
+    letter-spacing: 0.22em;
+  }
+  .brand-wordmark .brand-sub {
+    font-size: 0.48rem;
+    letter-spacing: 0.28em;
+  }
+  .brand-wordmark .brand-backing {
+    font-size: 0.44rem;
+  }
 }
 
 /* DESKTOP NAV */
@@ -218,9 +303,11 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 5px;
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -331,21 +418,21 @@
 .site-footer {
   background-color: var(--color-obsidian-deep);
   border-top: 1px solid rgba(220, 220, 235, 0.09);
-  padding-top: clamp(4rem, 7vw, 6rem);
-  padding-bottom: 2.5rem;
+  padding-top: clamp(2.5rem, 5vw, 4.5rem);
+  padding-bottom: clamp(1.75rem, 3vw, 2.5rem);
   position: relative;
 }
 
 .footer-top {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 3rem;
-  margin-bottom: clamp(3rem, 5vw, 5rem);
+  gap: clamp(1.75rem, 3vw, 2.75rem);
+  margin-bottom: clamp(2rem, 3.5vw, 3rem);
 }
 
 @media (min-width: 768px) {
   .footer-top {
-    grid-template-columns: 1.8fr 1fr 1fr 1.2fr;
+    grid-template-columns: 1.5fr 1fr 1.5fr;
   }
 }
 

@@ -1141,14 +1141,16 @@
       #d4af6a 78%, 
       #d4af6a 100%
     );
-  padding-top: clamp(4.5rem, 8vw, 8.5rem);
-  padding-bottom: clamp(4.5rem, 8vw, 8.5rem);
+  padding-top: clamp(2.75rem, 5vw, 5rem);
+  padding-bottom: clamp(2.75rem, 5vw, 5rem);
   position: relative;
   overflow: hidden;
 }
 
 @media (max-width: 991px) {
   .editorial-revelation-section {
+    padding-top: clamp(2rem, 4.5vw, 3.25rem);
+    padding-bottom: clamp(2rem, 4.5vw, 3.25rem);
     background: 
       radial-gradient(ellipse 85% 60% at 50% 82%, rgba(212, 175, 106, 0.22) 0%, transparent 75%),
       linear-gradient(180deg, 
@@ -1171,21 +1173,42 @@
   max-width: var(--container-max);
   margin-left: auto;
   margin-right: auto;
-  padding-left: clamp(1.25rem, 3.5vw, 4rem);
-  padding-right: clamp(1.25rem, 3.5vw, 4rem);
+  padding-left: clamp(0.85rem, 3.8vw, 1rem);
+  padding-right: clamp(0.85rem, 3.8vw, 1rem);
+}
+
+@media (min-width: 576px) {
+  .editorial-revelation-container {
+    padding-left: clamp(1.25rem, 2.5vw, 1.5rem);
+    padding-right: clamp(1.25rem, 2.5vw, 1.5rem);
+  }
+}
+
+@media (min-width: 992px) {
+  .editorial-revelation-container {
+    padding-left: clamp(2rem, 2.8vw, 2.75rem);
+    padding-right: clamp(2rem, 2.8vw, 2.75rem);
+  }
+}
+
+@media (min-width: 1440px) {
+  .editorial-revelation-container {
+    padding-left: 2.75rem;
+    padding-right: 2.75rem;
+  }
 }
 
 .editorial-revelation-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(2.5rem, 5vw, 5.5rem);
+  gap: clamp(1.75rem, 3.5vw, 3rem);
   align-items: center;
 }
 
 @media (min-width: 992px) {
   .editorial-revelation-grid {
-    grid-template-columns: 45% 55%;
-    gap: clamp(3rem, 6vw, 6.5rem);
+    grid-template-columns: 44% 56%;
+    gap: clamp(2.5rem, 4vw, 4.5rem);
   }
 }
 
@@ -1205,27 +1228,27 @@
   letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--color-silver-muted);
-  margin-bottom: clamp(1.2rem, 2vh, 1.8rem);
+  margin-bottom: clamp(0.75rem, 1.5vh, 1.25rem);
 }
 
 .editorial-revelation-heading {
   font-family: var(--font-serif);
-  font-size: clamp(2.6rem, 5vw, 4.6rem);
+  font-size: clamp(2.2rem, 4.4vw, 3.8rem);
   font-weight: 300;
   line-height: 1.08;
   letter-spacing: -0.015em;
   color: #F3F0EA;
-  margin-bottom: clamp(1.25rem, 2.5vh, 2rem);
+  margin-bottom: clamp(0.85rem, 1.8vh, 1.35rem);
 }
 
 .editorial-revelation-support {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+  font-size: clamp(1.1rem, 1.6vw, 1.35rem);
   font-weight: 300;
   color: var(--color-champagne-light);
-  line-height: 1.55;
-  margin-bottom: clamp(2rem, 3.5vh, 2.75rem);
+  line-height: 1.5;
+  margin-bottom: clamp(1.25rem, 2.5vh, 1.85rem);
   max-width: 480px;
 }
 
@@ -1398,42 +1421,48 @@
 .intro-experience-layout {
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(2.5rem, 4vw, 3.5rem);
+  gap: clamp(1.75rem, 3.5vw, 3rem);
   align-items: center;
 }
 
 .intro-text-column {
   width: 100%;
-  max-width: 380px;
+  max-width: 640px;
+}
+
+@media (min-width: 992px) {
+  .intro-text-column {
+    max-width: 420px;
+  }
 }
 
 .intro-heading {
-  font-size: clamp(2rem, 3.2vw, 3.1rem);
+  font-size: clamp(1.9rem, 3.2vw, 3rem);
   line-height: 1.15;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.85rem;
   color: var(--color-ivory);
   letter-spacing: -0.01em;
 }
 
 .intro-subheading {
   font-family: var(--font-serif);
-  font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
   font-weight: 300;
   color: var(--color-champagne-light);
-  line-height: 1.5;
-  margin-bottom: 1.75rem;
+  line-height: 1.45;
+  margin-bottom: 1.25rem;
 }
 
 .intro-quote-block {
   border-left: 1px solid var(--color-silver-border);
-  padding-left: 1.5rem;
-  margin-bottom: 2rem;
+  padding-left: 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
 .intro-quote-text {
   font-size: 1.05rem;
   color: var(--color-ivory);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   font-family: var(--font-serif);
   font-style: italic;
   line-height: 1.45;
@@ -1442,7 +1471,7 @@
 .intro-body-text {
   font-size: 0.88rem;
   color: var(--color-warm-grey);
-  line-height: 1.75;
+  line-height: 1.7;
   margin-bottom: 0;
 }
 
@@ -1540,7 +1569,7 @@
 .ritual-split-layout {
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(2rem, 4vw, 3.5rem);
+  gap: clamp(1.75rem, 3.5vw, 3rem);
   align-items: center;
   max-width: 1220px;
   margin: 0 auto;
@@ -1549,18 +1578,18 @@
 @media (min-width: 960px) {
   .ritual-split-layout {
     grid-template-columns: 1.05fr 0.95fr;
-    gap: clamp(2.5rem, 5vw, 4.5rem);
+    gap: clamp(2rem, 3.5vw, 3.5rem);
   }
 }
 
 .ritual-steps-stack {
   display: flex;
   flex-direction: column;
-  gap: 1.15rem;
+  gap: clamp(0.75rem, 1.5vw, 1rem);
 }
 
 .ritual-step-card {
-  padding: 1.5rem 1.75rem;
+  padding: clamp(1.15rem, 2vw, 1.5rem) clamp(1.25rem, 2.2vw, 1.65rem);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1635,29 +1664,29 @@
 .discovery-campaign-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(1.25rem, 2.5vw, 2rem);
+  gap: clamp(1rem, 2vw, 1.5rem);
   max-width: 100%;
-  margin: 0 auto 3.5rem;
+  margin: 0 auto clamp(1.75rem, 3vw, 2.5rem);
 }
 
 @media (min-width: 560px) {
   .discovery-campaign-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: clamp(1.5rem, 2.5vw, 2.25rem);
+    gap: clamp(1.25rem, 2vw, 1.75rem);
   }
 }
 
 @media (min-width: 1100px) {
   .discovery-campaign-grid {
     grid-template-columns: repeat(4, 1fr);
-    gap: clamp(1.25rem, 2vw, 1.85rem);
+    gap: clamp(1rem, 1.6vw, 1.5rem);
   }
 }
 
 .discovery-trio-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(1.25rem, 2.5vw, 2.25rem);
+  gap: clamp(1rem, 2vw, 1.75rem);
   max-width: 100%;
   margin: 0 auto;
 }
@@ -1665,7 +1694,7 @@
 @media (min-width: 768px) {
   .discovery-trio-grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: clamp(1.5rem, 2.5vw, 2.5rem);
+    gap: clamp(1.25rem, 2vw, 2rem);
   }
 }
 
@@ -1704,12 +1733,12 @@
    ========================================================================== */
 .science-hero {
   position: relative;
-  min-height: 82vh;
+  min-height: clamp(480px, 66vh, 740px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: calc(var(--header-height) + 4rem);
-  padding-bottom: 5rem;
+  padding-top: calc(var(--header-height) + clamp(1.5rem, 3.5vh, 3rem));
+  padding-bottom: clamp(2rem, 4.5vh, 3.75rem);
   overflow: hidden;
   background-color: var(--color-obsidian);
 }
@@ -1751,7 +1780,7 @@
 .science-philosophy-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(3rem, 6vw, 6rem);
+  gap: clamp(1.75rem, 3.5vw, 3.5rem);
   align-items: center;
 }
 
@@ -1798,10 +1827,10 @@
 .principles-editorial-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(2.5rem, 5vw, 3.5rem);
+  gap: clamp(1.25rem, 2.5vw, 2.25rem);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .principles-editorial-grid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -1820,7 +1849,7 @@
   border-radius: var(--radius-xs);
   overflow: hidden;
   background: #111111;
-  margin-bottom: 1.5rem;
+  margin-bottom: clamp(1rem, 1.8vw, 1.35rem);
   box-shadow: 0 16px 40px rgba(0,0,0,0.65);
 }
 
@@ -1865,19 +1894,19 @@
 .formulation-journey-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2rem;
+  gap: clamp(1rem, 2vw, 1.5rem);
   max-width: 1080px;
   margin: 0 auto;
 }
 
-@media (min-width: 860px) {
+@media (min-width: 768px) {
   .formulation-journey-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 .journey-item {
-  padding: 2.5rem 1.75rem;
+  padding: clamp(1.5rem, 2.5vw, 2.25rem) clamp(1rem, 1.8vw, 1.5rem);
   border-top: 1px solid var(--color-silver-border);
   display: flex;
   flex-direction: column;
