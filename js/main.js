@@ -601,6 +601,7 @@
         '.ritual-media-frame',
         '.discovery-campaign-card',
         '.principle-image-wrap',
+        '.science-image-frame',
         '.science-flacon-card',
         '.exclusive-coffret-card',
         '.velari-zoomable',

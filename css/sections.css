@@ -1404,7 +1404,7 @@
 
 .intro-text-column {
   width: 100%;
-  max-width: 440px;
+  max-width: 380px;
 }
 
 .intro-heading {
@@ -1455,7 +1455,7 @@
 
 @media (min-width: 992px) {
   .intro-experience-layout {
-    grid-template-columns: minmax(300px, 390px) 1.25fr;
+    grid-template-columns: minmax(280px, 360px) 1.6fr;
     gap: clamp(2.5rem, 4vw, 4.5rem);
     align-items: center;
   }
@@ -1463,8 +1463,8 @@
 
 @media (min-width: 1200px) {
   .intro-experience-layout {
-    grid-template-columns: minmax(320px, 410px) 1.3fr;
-    gap: clamp(2.75rem, 4.5vw, 5rem);
+    grid-template-columns: minmax(300px, 380px) 1.7fr;
+    gap: clamp(2.5rem, 4.5vw, 5rem);
   }
 }
 
@@ -1635,39 +1635,43 @@
 .discovery-campaign-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(1rem, 2vw, 1.5rem);
-  max-width: 1240px;
-  margin: 0 auto 3rem;
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+  max-width: 100%;
+  margin: 0 auto 3.5rem;
 }
 
 @media (min-width: 560px) {
   .discovery-campaign-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1.5rem, 2.5vw, 2.25rem);
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1100px) {
   .discovery-campaign-grid {
     grid-template-columns: repeat(4, 1fr);
+    gap: clamp(1.25rem, 2vw, 1.85rem);
   }
 }
 
 .discovery-trio-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(1rem, 2.2vw, 1.75rem);
-  max-width: 1180px;
+  gap: clamp(1.25rem, 2.5vw, 2.25rem);
+  max-width: 100%;
   margin: 0 auto;
 }
 
 @media (min-width: 768px) {
   .discovery-trio-grid {
     grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.5rem, 2.5vw, 2.5rem);
   }
 }
 
 .discovery-campaign-card {
   width: 100%;
+  aspect-ratio: 1 / 1;
   border: 1px solid rgba(212, 185, 130, 0.2);
   border-radius: var(--radius-xs);
   overflow: hidden;
@@ -1684,7 +1688,7 @@
 
 .discovery-campaign-image {
   width: 100%;
-  height: auto;
+  height: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
   display: block;
@@ -1759,28 +1763,35 @@
 
 .science-image-frame {
   position: relative;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
   border: 1px solid var(--color-silver-border);
   border-radius: var(--radius-xs);
   overflow: hidden;
   background: #111111;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(220, 220, 235, 0.03);
-  transition: border-color var(--transition-normal);
+  transition: transform var(--transition-normal), border-color var(--transition-fast), box-shadow var(--transition-normal);
 }
 
 .science-image-frame:hover {
+  transform: translateY(-4px);
   border-color: var(--color-silver-border-hover);
+  box-shadow: 0 26px 65px rgba(0, 0, 0, 0.95), 0 0 38px rgba(220, 220, 235, 0.08);
 }
 
 .science-image-frame img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  aspect-ratio: 1 / 1;
   display: block;
   object-fit: cover;
-  transition: transform 1.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .science-image-frame:hover img {
-  transform: scale(1.03);
+  transform: scale(1.025);
 }
 
 /* Section 3: Three Visual Principles */
