@@ -225,22 +225,24 @@
 
         <!-- Intake Form -->
         <div class="card-luxury" style="padding: clamp(2rem, 4.5vw, 3.5rem); margin-top: 2rem;">
-          <form id="exclusive-access-form">
+          <form id="exclusive-access-form" novalidate>
             <input type="hidden" id="access-allocation" value="Single Flacon (50ml)">
+            <!-- Honeypot anti-spam -->
+            <input type="text" id="access-hp-company" name="hp_organization" class="sr-only" tabindex="-1" autocomplete="off" aria-hidden="true">
 
             <div class="form-group">
               <label class="form-label" for="access-name">Full Name or Appointed Liaison <span class="required-dot">*</span></label>
-              <input type="text" id="access-name" class="form-input" placeholder="Your name or private office representative" required>
+              <input type="text" id="access-name" class="form-input" placeholder="Your name or private office representative" required autocomplete="name">
             </div>
 
             <div class="form-group">
               <label class="form-label" for="access-email">Direct Email <span class="required-dot">*</span></label>
-              <input type="email" id="access-email" class="form-input" placeholder="confidential@privateoffice.com" required>
+              <input type="email" id="access-email" class="form-input" placeholder="confidential@privateoffice.com" required autocomplete="email">
             </div>
 
             <div class="form-group">
               <label class="form-label" for="access-phone">Phone / WhatsApp <span class="required-dot">*</span></label>
-              <input type="tel" id="access-phone" class="form-input" placeholder="+1 / +44 / +91 / +61..." required>
+              <input type="tel" id="access-phone" class="form-input" placeholder="+1 / +44 / +91 / +61..." required autocomplete="tel">
             </div>
 
             <div class="form-group">
@@ -260,12 +262,17 @@
               </label>
             </div>
 
-            <div id="access-form-status" class="form-status"></div>
+            <div id="access-form-status" class="form-status" role="alert" aria-live="polite"></div>
 
-            <div style="margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap;">
-              <button type="submit" class="btn btn-primary" style="flex: 1; min-width: 200px;">
-                REQUEST PRIVATE ENQUIRY
+            <div style="margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap; flex-direction: column; align-items: stretch;">
+              <button type="submit" class="btn btn-primary" id="access-submit-btn" style="width: 100%;">
+                Submit Private Access Request
               </button>
+              <div style="text-align: center; margin-top: 0.5rem;">
+                <a href="mailto:enquiries@velariprive.com?subject=ANAG%C3%88NESE%20Private%20Access%20Request" id="access-alt-email-btn" class="form-alt-email-link">
+                  Prefer direct email? Compose in Email App ↗
+                </a>
+              </div>
             </div>
           </form>
         </div>

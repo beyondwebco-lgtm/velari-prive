@@ -81,6 +81,19 @@
 
   <main id="main-content">
 
+    <!-- Neutral Return Feedback Banner (Displayed when returning from external email client) -->
+    <div id="mailto-feedback-banner" class="mailto-feedback-banner" role="status" aria-live="polite" style="display: none;">
+      <div class="feedback-banner-content">
+        <p>
+          <strong>Welcome back.</strong> If you sent your email, our concierge team will review your enquiry.
+        </p>
+        <div class="feedback-banner-actions">
+          <a href="#areas-of-focus" class="btn-banner-link">Return to Personal Discovery</a>
+          <button type="button" class="btn-banner-close" id="btn-close-feedback-banner" aria-label="Dismiss notification">✕</button>
+        </div>
+      </div>
+    </div>
+
     <!-- ======================================================================
          SECTION 1: HERO
          ====================================================================== -->
@@ -123,10 +136,10 @@
           </div>
         </div>
 
-        <!-- Guide Down CTA Button -->
+        <!-- Clear Guide Down CTA Button -->
         <div style="text-align: center; margin-top: clamp(1.75rem, 3vw, 2.5rem);">
-          <a href="#concerns" class="btn btn-champagne" style="padding: 1.1rem 2.8rem; display: inline-flex; align-items: center; gap: 0.75rem; letter-spacing: 0.18em; font-size: 0.82rem; text-decoration: none;">
-            FILL THE FORM
+          <a href="#areas-of-focus" class="btn btn-champagne" style="padding: 1.1rem 2.8rem; display: inline-flex; align-items: center; gap: 0.75rem; letter-spacing: 0.18em; font-size: 0.82rem; text-decoration: none;">
+            CHOOSE SCALP FOCUS & ENQUIRE
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <path d="M6 2V10M6 10L2.5 6.5M6 10L9.5 6.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -136,158 +149,227 @@
     </section>
 
     <!-- ======================================================================
-         SECTION 2: FIVE HAIR & SCALP CONCERNS
+         SECTION 2: SIX SCALP & HAIR FOCUS CATEGORIES
          ====================================================================== -->
-    <section id="concerns" class="section" style="background-color: var(--color-obsidian); border-top: 1px solid var(--color-silver-border); scroll-margin-top: calc(var(--header-height) + 1.5rem);">
+    <section id="areas-of-focus" class="section" style="background-color: var(--color-obsidian); border-top: 1px solid var(--color-silver-border); scroll-margin-top: calc(var(--header-height) + 1.5rem);">
+      <span id="concerns" style="position: absolute; top: -100px; left: 0;" aria-hidden="true"></span>
       <div class="container">
         
-        <div style="text-align: center; max-width: 720px; margin: 0 auto clamp(1.75rem, 3vw, 2.5rem);">
-          <span class="eyebrow eyebrow-silver">AREAS OF FOCUS</span>
-          <h2 style="font-size: clamp(2rem, 3.8vw, 3.2rem); margin-bottom: 1.25rem; color: var(--color-ivory);">
+        <div class="text-center" style="max-width: 720px; margin: 0 auto clamp(2rem, 3.5vw, 3rem);">
+          <span class="eyebrow eyebrow-silver" style="display: block; margin-bottom: 0.85rem; letter-spacing: 0.24em;">AREAS OF FOCUS</span>
+          <h2 style="font-size: clamp(2rem, 3.8vw, 3.2rem); margin-bottom: 1rem; color: var(--color-ivory); letter-spacing: 0.04em; text-transform: uppercase;">
             Understanding Your Scalp & Hair
           </h2>
-          <p style="font-size: 0.92rem; color: var(--color-warm-grey); line-height: 1.7;">
-            Select any category below to pre-fill your private enquiry.
+          <p style="font-size: clamp(0.92rem, 1.1vw, 1.05rem); color: var(--color-warm-grey); line-height: 1.7; max-width: 600px; margin: 0 auto;">
+            Select your primary area of focus below to tailor your private consultation enquiry.
           </p>
         </div>
 
-        <!-- 5 Category Cards -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: clamp(1rem, 2vw, 1.5rem); max-width: 1100px; margin: 0 auto clamp(2rem, 3.5vw, 2.75rem);">
-          
-          <!-- Category 1 -->
-          <div class="concern-card" data-concern="Dryness and scalp comfort">
-            <div>
-              <div class="card-header">
-                <span class="eyebrow eyebrow-silver" style="font-size: 0.62rem;">CATEGORY 01</span>
-                <div class="concern-indicator">
-                  <svg viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8.5 2.5"/></svg>
+        <!-- Semantic 6-Category Native Radio Group -->
+        <fieldset class="scalp-categories-fieldset" id="scalp-categories-fieldset">
+          <legend class="sr-only">Select your primary scalp and hair area of focus</legend>
+          <div class="scalp-categories-grid">
+            
+            <!-- Category 1 -->
+            <div class="scalp-category-item">
+              <input 
+                type="radio" 
+                name="scalp_category" 
+                id="cat-01" 
+                value="Category 01: Dryness & Scalp Comfort" 
+                class="scalp-category-radio sr-only" 
+                checked
+              >
+              <label for="cat-01" class="concern-card" id="label-cat-01">
+                <div class="card-header">
+                  <span class="eyebrow eyebrow-silver">CATEGORY 01</span>
+                  <div class="card-status-pill" aria-hidden="true">SELECTED</div>
+                  <div class="concern-indicator" aria-hidden="true">
+                    <svg viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8.5 2.5"/></svg>
+                  </div>
                 </div>
-              </div>
-              <div class="concern-title">Dryness & Scalp Comfort</div>
-              <p class="concern-desc">
-                Addressing surface tightness, flaking sensations, and dry environmental exposure through biomimetic aqueous hydration and barrier comfort.
-              </p>
+                <div class="concern-title">Dryness & Scalp Comfort</div>
+                <p class="concern-desc">
+                  Addressing surface tightness, flaking sensations, and dry environmental exposure through biomimetic aqueous hydration and barrier comfort.
+                </p>
+              </label>
             </div>
-          </div>
 
-          <!-- Category 2 -->
-          <div class="concern-card" data-concern="Excess oil and scalp balance">
-            <div>
-              <div class="card-header">
-                <span class="eyebrow eyebrow-silver" style="font-size: 0.62rem;">CATEGORY 02</span>
-                <div class="concern-indicator">
-                  <svg viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8.5 2.5"/></svg>
+            <!-- Category 2 -->
+            <div class="scalp-category-item">
+              <input 
+                type="radio" 
+                name="scalp_category" 
+                id="cat-02" 
+                value="Category 02: Excess Oil & Scalp Balance" 
+                class="scalp-category-radio sr-only"
+              >
+              <label for="cat-02" class="concern-card" id="label-cat-02">
+                <div class="card-header">
+                  <span class="eyebrow eyebrow-silver">CATEGORY 02</span>
+                  <div class="card-status-pill" aria-hidden="true">SELECTED</div>
+                  <div class="concern-indicator" aria-hidden="true">
+                    <svg viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8.5 2.5"/></svg>
+                  </div>
                 </div>
-              </div>
-              <div class="concern-title">Excess Oil & Scalp Balance</div>
-              <p class="concern-desc">
-                Encouraging balanced sebum dynamics and a clean, weightless scalp sensation without stripping the natural protective acid mantle.
-              </p>
+                <div class="concern-title">Excess Oil & Scalp Balance</div>
+                <p class="concern-desc">
+                  Encouraging balanced sebum dynamics and a clean, weightless scalp sensation without stripping the natural protective acid mantle.
+                </p>
+              </label>
             </div>
-          </div>
 
-          <!-- Category 3 -->
-          <div class="concern-card" data-concern="Hair thinning and appearance of fullness">
-            <div>
-              <div class="card-header">
-                <span class="eyebrow eyebrow-silver" style="font-size: 0.62rem;">CATEGORY 03</span>
-                <div class="concern-indicator">
-                  <svg viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8.5 2.5"/></svg>
+            <!-- Category 3 -->
+            <div class="scalp-category-item">
+              <input 
+                type="radio" 
+                name="scalp_category" 
+                id="cat-03" 
+                value="Category 03: Thinning & Appearance of Fullness" 
+                class="scalp-category-radio sr-only"
+              >
+              <label for="cat-03" class="concern-card" id="label-cat-03">
+                <div class="card-header">
+                  <span class="eyebrow eyebrow-silver">CATEGORY 03</span>
+                  <div class="card-status-pill" aria-hidden="true">SELECTED</div>
+                  <div class="concern-indicator" aria-hidden="true">
+                    <svg viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8.5 2.5"/></svg>
+                  </div>
                 </div>
-              </div>
-              <div class="concern-title">Thinning & Appearance of Fullness</div>
-              <p class="concern-desc">
-                Enhancing visible root lift, light reflection, and the cosmetic perception of body and vitality along emerging strands.
-              </p>
+                <div class="concern-title">Thinning & Appearance of Fullness</div>
+                <p class="concern-desc">
+                  Enhancing visible root lift, light reflection, and the cosmetic perception of body and vitality along emerging strands.
+                </p>
+              </label>
             </div>
-          </div>
 
-          <!-- Category 4 -->
-          <div class="concern-card" data-concern="Hair breakage and texture">
-            <div>
-              <div class="card-header">
-                <span class="eyebrow eyebrow-silver" style="font-size: 0.62rem;">CATEGORY 04</span>
-                <div class="concern-indicator">
-                  <svg viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8.5 2.5"/></svg>
+            <!-- Category 4 -->
+            <div class="scalp-category-item">
+              <input 
+                type="radio" 
+                name="scalp_category" 
+                id="cat-04" 
+                value="Category 04: Breakage & Texture" 
+                class="scalp-category-radio sr-only"
+              >
+              <label for="cat-04" class="concern-card" id="label-cat-04">
+                <div class="card-header">
+                  <span class="eyebrow eyebrow-silver">CATEGORY 04</span>
+                  <div class="card-status-pill" aria-hidden="true">SELECTED</div>
+                  <div class="concern-indicator" aria-hidden="true">
+                    <svg viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8.5 2.5"/></svg>
+                  </div>
                 </div>
-              </div>
-              <div class="concern-title">Breakage & Texture</div>
-              <p class="concern-desc">
-                Conditioning the outer cuticle surface to impart silkiness, ease of styling, and reduced comb friction across delicate lengths.
-              </p>
+                <div class="concern-title">Breakage & Texture</div>
+                <p class="concern-desc">
+                  Conditioning the outer cuticle surface to impart silkiness, ease of styling, and reduced comb friction across delicate lengths.
+                </p>
+              </label>
             </div>
-          </div>
 
-          <!-- Category 5 -->
-          <div class="concern-card" data-concern="General scalp care">
-            <div>
-              <div class="card-header">
-                <span class="eyebrow eyebrow-silver" style="font-size: 0.62rem;">CATEGORY 05</span>
-                <div class="concern-indicator">
-                  <svg viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8.5 2.5"/></svg>
+            <!-- Category 5 -->
+            <div class="scalp-category-item">
+              <input 
+                type="radio" 
+                name="scalp_category" 
+                id="cat-05" 
+                value="Category 05: General Scalp Care" 
+                class="scalp-category-radio sr-only"
+              >
+              <label for="cat-05" class="concern-card" id="label-cat-05">
+                <div class="card-header">
+                  <span class="eyebrow eyebrow-silver">CATEGORY 05</span>
+                  <div class="card-status-pill" aria-hidden="true">SELECTED</div>
+                  <div class="concern-indicator" aria-hidden="true">
+                    <svg viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8.5 2.5"/></svg>
+                  </div>
                 </div>
-              </div>
-              <div class="concern-title">General Scalp Care</div>
-              <p class="concern-desc">
-                Establishing an intentional, preventive daily ceremony to maintain overall scalp wellbeing, micro-cleanliness, and sensory calm.
-              </p>
+                <div class="concern-title">General Scalp Care</div>
+                <p class="concern-desc">
+                  Establishing an intentional, preventive daily ceremony to maintain overall scalp wellbeing, micro-cleanliness, and sensory calm.
+                </p>
+              </label>
             </div>
-          </div>
 
-          <!-- Category 6 -->
-          <div class="concern-card" data-concern="Others">
-            <div>
-              <div class="card-header">
-                <span class="eyebrow eyebrow-silver" style="font-size: 0.62rem;">CATEGORY 06</span>
-                <div class="concern-indicator">
-                  <svg viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8.5 2.5"/></svg>
+            <!-- Category 6 -->
+            <div class="scalp-category-item">
+              <input 
+                type="radio" 
+                name="scalp_category" 
+                id="cat-06" 
+                value="Category 06: Others" 
+                class="scalp-category-radio sr-only"
+              >
+              <label for="cat-06" class="concern-card" id="label-cat-06">
+                <div class="card-header">
+                  <span class="eyebrow eyebrow-silver">CATEGORY 06</span>
+                  <div class="card-status-pill" aria-hidden="true">SELECTED</div>
+                  <div class="concern-indicator" aria-hidden="true">
+                    <svg viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8.5 2.5"/></svg>
+                  </div>
                 </div>
-              </div>
-              <div class="concern-title">Others</div>
-              <p class="concern-desc">
-                Share any specific hair, scalp, or personal ritual preferences you would like our Private Client Liaison to address.
-              </p>
+                <div class="concern-title">Others</div>
+                <p class="concern-desc">
+                  Share any specific hair, scalp, or personal ritual preferences you would like our Private Client Liaison to address.
+                </p>
+              </label>
             </div>
-          </div>
 
-        </div>
+          </div>
+        </fieldset>
 
       </div>
     </section>
 
     <!-- ======================================================================
-         SECTION 3: PREMIUM ENQUIRY FORM
+         SECTION 3: PRIVATE CONSULTATION ENQUIRY FORM
          ====================================================================== -->
-    <section id="enquiry-section" class="section" style="background-color: var(--color-charcoal); border-top: 1px solid var(--color-silver-border); border-bottom: 1px solid var(--color-silver-border); scroll-margin-top: calc(var(--header-height) + 1.5rem);">
+    <section id="enquiry-form" class="section" style="background-color: var(--color-charcoal); border-top: 1px solid var(--color-silver-border); border-bottom: 1px solid var(--color-silver-border); scroll-margin-top: calc(var(--header-height) + 1.5rem);">
+      <span id="enquiry-section" style="position: absolute; top: -100px; left: 0;" aria-hidden="true"></span>
       <div class="container-narrow">
         
         <div class="card-luxury" style="padding: clamp(2rem, 4.5vw, 3.5rem);">
           <span class="eyebrow eyebrow-silver">CONFIDENTIAL INQUIRY</span>
           <h2 style="font-size: clamp(1.8rem, 3.4vw, 2.5rem); color: var(--color-ivory); margin-bottom: 0.75rem;">
-            Private Enquiry
+            Private Consultation Enquiry
           </h2>
-          <p style="font-size: 0.88rem; color: var(--color-warm-grey); margin-bottom: 2.5rem;">
-            Submit your details below to receive a personalised product introduction from the VELARI PRIVÉ Private Client Liaison.
+          <p style="font-size: 0.88rem; color: var(--color-warm-grey); margin-bottom: 2rem; line-height: 1.7;">
+            Complete your details below. Submitting will launch your email application with your tailored consultation request pre-filled to our private concierge.
           </p>
 
-          <form id="personal-discovery-form">
+          <!-- Active Focus Summary Bar on Form -->
+          <div class="active-focus-bar" id="activeFocusBar">
+            <div>
+              <div class="active-focus-label">SELECTED SCALP FOCUS</div>
+              <div class="active-focus-value" id="formFocusDisplay">Category 01: Dryness & Scalp Comfort</div>
+            </div>
+            <a href="#areas-of-focus" class="active-focus-change-btn">Change Focus ↑</a>
+          </div>
+
+          <form id="personal-discovery-form" novalidate>
+            <!-- Hidden Selected Category Sync -->
+            <input type="hidden" id="pd-category-input" name="scalp_category" value="Category 01: Dryness & Scalp Comfort">
+            
+            <!-- Anti-Spam Honeypot (Hidden from genuine visitors) -->
+            <input type="text" id="pd-hp-company" name="hp_organization" class="sr-only" tabindex="-1" autocomplete="off" aria-hidden="true">
+
             <div class="form-group">
               <label class="form-label" for="pd-name">Full Name <span class="required-dot">*</span></label>
-              <input type="text" id="pd-name" class="form-input" placeholder="Your full name or representative" required>
+              <input type="text" id="pd-name" class="form-input" placeholder="Your full name or representative" required autocomplete="name">
             </div>
 
             <div class="form-group">
               <label class="form-label" for="pd-email">Email Address <span class="required-dot">*</span></label>
-              <input type="email" id="pd-email" class="form-input" placeholder="patron@privateoffice.com" required>
+              <input type="email" id="pd-email" class="form-input" placeholder="patron@privateoffice.com" required autocomplete="email">
             </div>
 
             <div class="form-group">
               <label class="form-label" for="pd-phone">Phone / WhatsApp <span class="required-dot">*</span></label>
-              <input type="tel" id="pd-phone" class="form-input" placeholder="+1 / +44 / +91 / +61..." required>
+              <input type="tel" id="pd-phone" class="form-input" placeholder="+1 / +44 / +91 / +61..." required autocomplete="tel">
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="pd-message">Optional Message</label>
+              <label class="form-label" for="pd-message">Optional Message or Scalp Notes</label>
               <textarea id="pd-message" class="form-textarea" rows="3" placeholder="Share any particular routine preferences, timing, or private notes..."></textarea>
             </div>
 
@@ -298,12 +380,20 @@
               </label>
             </div>
 
-            <div id="pd-form-status" class="form-status"></div>
+            <div id="pd-form-status" class="form-status" role="alert" aria-live="polite"></div>
 
             <div style="margin-top: 2.25rem;">
-              <button type="submit" class="btn btn-primary" style="width: 100%;">
-                Submit Private Enquiry
+              <button type="submit" class="btn btn-primary" id="pd-submit-btn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.6rem;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect width="20" height="16" x="2" y="4" rx="2"/>
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                </svg>
+                <span>SUBMIT & OPEN EMAIL APP</span>
+                <span class="btn-arrow" aria-hidden="true">↗</span>
               </button>
+              <p style="font-size: 0.78rem; color: var(--color-silver-muted); text-align: center; margin-top: 0.85rem; line-height: 1.6;">
+                Submitting prepares your confidential message in your device's email client addressed to <strong>enquiries@velariprive.com</strong>.
+              </p>
             </div>
           </form>
         </div>
@@ -313,7 +403,7 @@
              ====================================================================== -->
         <div class="compliance-disclaimer" style="margin-top: 3.5rem;">
           <p>
-            <strong>Disclaimer:</strong> ANAGÈNESE is a cosmeceutical and dermaceutical scalp-care product. Information is provided for general awareness only and does not constitute medical advice, diagnosis, or treatment.
+            <strong>Disclaimer:</strong> ANAGÈNESE is a cosmeceutical/dermaceutical scalp-care product. Information is provided for general awareness only and does not constitute medical advice, diagnosis, or treatment.
           </p>
         </div>
 

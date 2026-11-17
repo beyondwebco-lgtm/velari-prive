@@ -1,5 +1,6 @@
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
+import enquiryHandler from './api/enquiry.js';
 
 export default defineConfig({
   root: './',
@@ -18,10 +19,27 @@ export default defineConfig({
   },
   plugins: [
     {
-      name: 'html-rewrite-plugin',
+      name: 'html-rewrite-and-api-plugin',
       configureServer(server) {
-        server.middlewares.use((req, res, next) => {
+        server.middlewares.use(async (req, res, next) => {
           const url = req.url ? req.url.split('?')[0] : '';
+          
+          if (url === '/api/enquiry') {
+            let body = '';
+            req.on('data', chunk => body += chunk);
+            req.on('end', async () => {
+              req.body = body;
+              try {
+                await enquiryHandler(req, res);
+              } catch (err) {
+                res.statusCode = 500;
+                res.setHeader('Content-Type', 'application/json');
+                res.end(JSON.stringify({ error: err.message }));
+              }
+            });
+            return;
+          }
+
           if (url === '/the-science') {
             req.url = '/the-science.html';
           } else if (url === '/personal-discovery' || url === '/private-discovery') {

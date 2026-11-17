@@ -247,7 +247,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   HERO VIDEO CONTAINER & LUXURY PROGRESS LOADER
+   HERO VIDEO CONTAINER, IMMEDIATE POSTER VEIL & ACCESSIBLE CONTROLS
    -------------------------------------------------------------------------- */
 .hero-video-container {
   position: relative;
@@ -256,6 +256,23 @@
   height: 100svh;
   overflow: hidden;
   background-color: #070709;
+}
+
+/* Lightweight Immediate Poster Image Veil */
+.hero-poster-fallback {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 2;
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.85s ease;
+  pointer-events: none;
+}
+
+.hero-poster-fallback.is-hidden {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .hero-video-loader {

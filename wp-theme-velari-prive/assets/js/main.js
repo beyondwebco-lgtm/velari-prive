@@ -111,149 +111,55 @@
     });
 
     // ------------------------------------------------------------------------
-    // 4. HERO VIDEO AUTOPLAY & LOADING PROGRESS BAR CONTROLLER
+    // 4. OPENING HERO FILM: NORMAL AUTOPLAY CONTROLLER
     // ------------------------------------------------------------------------
-    const heroLoader = document.getElementById('heroVideoLoader');
-    const heroLoaderBar = document.getElementById('heroLoaderBar');
-    const heroLoaderPercent = document.getElementById('heroLoaderPercent');
-    const heroPrimaryVideo = document.querySelector('.hero-film-video');
+    const heroVideo = document.getElementById('heroFilmVideo') || document.querySelector('.hero-film-video');
 
-    if (heroLoader && heroPrimaryVideo) {
-      let currentPercent = 0;
-      let targetPercent = 14; // Initial anticipation
-      let isCompleted = false;
-      let animationFrameId = null;
+    if (heroVideo) {
+      heroVideo.muted = true;
+      heroVideo.defaultMuted = true;
+      heroVideo.loop = true;
+      heroVideo.playsInline = true;
+      heroVideo.setAttribute('muted', '');
+      heroVideo.setAttribute('playsinline', '');
+      heroVideo.setAttribute('webkit-playsinline', '');
+      heroVideo.setAttribute('autoplay', '');
 
-      const updateUI = () => {
-        if (heroLoaderBar) {
-          heroLoaderBar.style.width = `${currentPercent.toFixed(1)}%`;
-        }
-        if (heroLoaderPercent) {
-          heroLoaderPercent.textContent = `${Math.round(currentPercent)}%`;
-        }
-      };
-
-      const finishLoading = () => {
-        if (isCompleted) return;
-        isCompleted = true;
-        targetPercent = 100;
-        
-        // Attempt play immediately
-        heroPrimaryVideo.play().catch(() => {});
-
-        // Graceful glide to 100%
-        const finishInterval = setInterval(() => {
-          currentPercent += (100 - currentPercent) * 0.35 + 1.2;
-          if (currentPercent >= 100) {
-            currentPercent = 100;
-            updateUI();
-            clearInterval(finishInterval);
-            if (animationFrameId) cancelAnimationFrame(animationFrameId);
-
-            setTimeout(() => {
-              heroLoader.classList.add('is-loaded');
-              setTimeout(() => {
-                heroLoader.style.display = 'none';
-              }, 900);
-            }, 260);
-          } else {
-            updateUI();
-          }
-        }, 25);
-      };
-
-      // Smooth RAF progression loop
-      const tick = () => {
-        if (!isCompleted) {
-          currentPercent += (targetPercent - currentPercent) * 0.085;
-          updateUI();
-          animationFrameId = requestAnimationFrame(tick);
+      const playVideo = () => {
+        const promise = heroVideo.play();
+        if (promise !== undefined) {
+          promise.catch(() => {
+            // Autoplay policy fallback: resume playback on first user touch/click/scroll
+            const resumeOnInteraction = () => {
+              if (heroVideo.paused) {
+                heroVideo.play().catch(() => {});
+              }
+            };
+            window.addEventListener('touchstart', resumeOnInteraction, { once: true, passive: true });
+            window.addEventListener('click', resumeOnInteraction, { once: true, passive: true });
+            window.addEventListener('scroll', resumeOnInteraction, { once: true, passive: true });
+          });
         }
       };
-      animationFrameId = requestAnimationFrame(tick);
 
-      // Listen to buffer and load progression
-      const updateBufferedProgress = () => {
-        if (isCompleted) return;
-        try {
-          if (heroPrimaryVideo.buffered && heroPrimaryVideo.buffered.length > 0) {
-            const bufferedEnd = heroPrimaryVideo.buffered.end(heroPrimaryVideo.buffered.length - 1);
-            const requiredBuffer = Math.min(heroPrimaryVideo.duration || 6, 6);
-            const bufferRatio = Math.min(1, bufferedEnd / requiredBuffer);
-            targetPercent = Math.max(targetPercent, Math.round(20 + bufferRatio * 75));
-          }
-        } catch (e) {}
-      };
-
-      heroPrimaryVideo.addEventListener('progress', updateBufferedProgress);
-      heroPrimaryVideo.addEventListener('loadedmetadata', () => {
-        targetPercent = Math.max(targetPercent, 35);
+      // Loop fail-safe for iOS Safari and mobile browsers
+      heroVideo.addEventListener('ended', () => {
+        heroVideo.currentTime = 0;
+        heroVideo.play().catch(() => {});
       });
-      heroPrimaryVideo.addEventListener('loadeddata', () => {
-        targetPercent = Math.max(targetPercent, 72);
-      });
-      heroPrimaryVideo.addEventListener('canplay', () => {
-        targetPercent = Math.max(targetPercent, 95);
-        setTimeout(finishLoading, 220);
-      });
-      heroPrimaryVideo.addEventListener('canplaythrough', finishLoading);
-      heroPrimaryVideo.addEventListener('playing', finishLoading);
 
-      // Handle already cached / ready video
-      if (heroPrimaryVideo.readyState >= 3) {
-        finishLoading();
-      } else {
-        // Continuous steady progress heartbeat
-        const heartbeat = setInterval(() => {
-          if (isCompleted) {
-            clearInterval(heartbeat);
-            return;
-          }
-          if (targetPercent < 90) {
-            targetPercent += 3.5;
-          }
-        }, 160);
-
-        // Fail-safe timeout ensures the site is never blocked on restricted mobile networks
-        setTimeout(() => {
-          clearInterval(heartbeat);
-          finishLoading();
-        }, 3800);
+      // Immediate play attempt
+      playVideo();
+      if (heroVideo.readyState < 2) {
+        heroVideo.addEventListener('loadeddata', playVideo, { once: true });
+        heroVideo.addEventListener('canplay', playVideo, { once: true });
       }
+
+      // First-interaction safety net
+      window.addEventListener('touchstart', () => { if (heroVideo.paused) heroVideo.play().catch(() => {}); }, { once: true, passive: true });
+      window.addEventListener('click', () => { if (heroVideo.paused) heroVideo.play().catch(() => {}); }, { once: true, passive: true });
+      window.addEventListener('scroll', () => { if (heroVideo.paused) heroVideo.play().catch(() => {}); }, { once: true, passive: true });
     }
-
-    const heroVideos = document.querySelectorAll('.hero-film-video, video[autoplay]');
-    heroVideos.forEach((video) => {
-      video.muted = true;
-      video.defaultMuted = true;
-      video.loop = true;
-      video.setAttribute('muted', '');
-      video.setAttribute('playsinline', '');
-      video.setAttribute('webkit-playsinline', '');
-      video.setAttribute('loop', '');
-      
-      // Explicit fail-safe loop handler: guarantees endless playback across all engines
-      video.addEventListener('ended', () => {
-        video.currentTime = 0;
-        video.play().catch(() => {});
-      });
-      
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch((err) => {
-          console.warn('Autoplay deferred:', err);
-          const playOnInteraction = () => {
-            video.play().catch(() => {});
-            window.removeEventListener('touchstart', playOnInteraction);
-            window.removeEventListener('click', playOnInteraction);
-            window.removeEventListener('scroll', playOnInteraction);
-          };
-          window.addEventListener('touchstart', playOnInteraction, { once: true, passive: true });
-          window.addEventListener('click', playOnInteraction, { once: true, passive: true });
-          window.addEventListener('scroll', playOnInteraction, { once: true, passive: true });
-        });
-      }
-    });
 
     // 4B. HERO SCROLL CUE DYNAMIC FADE ON SCROLL
     const heroScrollCue = document.querySelector('.hero-scroll-cue');
@@ -270,38 +176,90 @@
     }
 
     // ------------------------------------------------------------------------
-    // 5. PERSONAL / PRIVATE DISCOVERY: CONCERN CARDS SELECTION
+    // 5. PERSONAL DISCOVERY: SCALP CATEGORIES & CONCIERGE INTEGRATION
     // ------------------------------------------------------------------------
-    const concernCards = document.querySelectorAll('.concern-card');
-    const selectedConcerns = new Set();
+    const categoryRadios = document.querySelectorAll('input[name="scalp_category"]');
+    const formFocusDisplay = document.getElementById('formFocusDisplay');
+    const formCategoryInput = document.getElementById('pd-category-input');
 
-    concernCards.forEach((card) => {
-      card.addEventListener('click', () => {
-        const concern = card.dataset.concern;
-        if (!concern) return;
+    function syncSelectedCategory(categoryValue) {
+      if (!categoryValue) return;
 
-        // Toggle selected state
-        if (card.classList.contains('selected')) {
-          card.classList.remove('selected');
-          selectedConcerns.delete(concern);
-        } else {
-          // Highlight card
-          card.classList.add('selected');
-          selectedConcerns.add(concern);
-        }
+      if (formFocusDisplay) formFocusDisplay.textContent = categoryValue;
+      if (formCategoryInput) formCategoryInput.value = categoryValue;
 
-        // Sync with enquiry form (pd-concern or discovery-interest)
-        const targetSelect = document.getElementById('pd-concern') || document.getElementById('discovery-interest');
-        if (targetSelect && concern) {
-          targetSelect.value = concern;
-        }
+      // Update card visual selected classes
+      document.querySelectorAll('.scalp-category-item .concern-card').forEach((card) => {
+        card.classList.remove('selected');
+      });
+      const activeRadio = Array.from(categoryRadios).find(r => r.value === categoryValue);
+      if (activeRadio) {
+        const activeLabel = document.querySelector(`label[for="${activeRadio.id}"]`);
+        if (activeLabel) activeLabel.classList.add('selected');
+      }
 
-        window.velariTrackEvent('concern_card_toggled', {
-          concern: concern,
-          total_selected: selectedConcerns.size
+      try {
+        sessionStorage.setItem('velari_selected_category', categoryValue);
+      } catch (e) {}
+
+      window.velariTrackEvent('scalp_category_selected', { category: categoryValue });
+    }
+
+    if (categoryRadios.length > 0) {
+      // Initialize with currently checked radio or default
+      const checkedRadio = Array.from(categoryRadios).find(r => r.checked) || categoryRadios[0];
+      if (checkedRadio) {
+        syncSelectedCategory(checkedRadio.value);
+      }
+
+      categoryRadios.forEach((radio) => {
+        radio.addEventListener('change', () => {
+          if (radio.checked) {
+            syncSelectedCategory(radio.value);
+          }
         });
       });
+    }
+
+    // ------------------------------------------------------------------------
+    // 5B. NEUTRAL FEEDBACK BANNER ON RETURN FROM EMAIL CLIENT
+    // ------------------------------------------------------------------------
+    const feedbackBanner = document.getElementById('mailto-feedback-banner');
+    const closeBannerBtn = document.getElementById('btn-close-feedback-banner');
+
+    function checkMailtoReturn() {
+      if (!feedbackBanner) return;
+      try {
+        const openedTimeStr = sessionStorage.getItem('velari_mailto_opened');
+        if (openedTimeStr) {
+          const elapsed = Date.now() - parseInt(openedTimeStr, 10);
+          // If within 15 minutes of clicking email link
+          if (elapsed < 15 * 60 * 1000) {
+            feedbackBanner.style.display = 'block';
+          }
+        }
+      } catch (e) {}
+    }
+
+    if (closeBannerBtn && feedbackBanner) {
+      closeBannerBtn.addEventListener('click', () => {
+        feedbackBanner.style.display = 'none';
+        try {
+          sessionStorage.removeItem('velari_mailto_opened');
+        } catch (e) {}
+      });
+    }
+
+    // Check on visibility change and window focus
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        checkMailtoReturn();
+      }
     });
+    window.addEventListener('focus', checkMailtoReturn);
+
+    // Initial check on load
+    checkMailtoReturn();
 
     // ------------------------------------------------------------------------
     // 6. PRIVATE DISCOVERY: MULTI-STEP QUESTIONNAIRE
@@ -411,23 +369,31 @@
     }
 
     // ------------------------------------------------------------------------
-    // 7. PRIVATE DISCOVERY & EXCLUSIVE ACCESS FORMS
+    // 7. SECURE SERVER-SIDE ENQUIRY DISPATCH & RESILIENT ERROR HANDLING
     // ------------------------------------------------------------------------
     function setupEnquiryForm(formId, statusId, eventName, successHeading, successBody) {
       const form = document.getElementById(formId);
       const statusBox = document.getElementById(statusId);
       if (!form) return;
 
-      form.addEventListener('submit', function (e) {
+      const formLoadTime = Date.now();
+
+      form.addEventListener('submit', async function (e) {
         e.preventDefault();
         const submitBtn = form.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn ? submitBtn.textContent : 'Submit';
 
-        // Validation
+        // Client-side validation
         const requiredFields = form.querySelectorAll('[required]');
         let valid = true;
         requiredFields.forEach((field) => {
           if (field.type === 'checkbox') {
-            if (!field.checked) valid = false;
+            if (!field.checked) {
+              valid = false;
+              field.style.outline = '2px solid rgba(240, 120, 120, 0.8)';
+            } else {
+              field.style.outline = '';
+            }
           } else if (!field.value.trim()) {
             valid = false;
             field.style.borderColor = 'rgba(240, 120, 120, 0.6)';
@@ -436,10 +402,32 @@
           }
         });
 
+        // Email regex check
+        const emailInput = form.querySelector('input[type="email"]');
+        if (emailInput && emailInput.value.trim()) {
+          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailPattern.test(emailInput.value.trim())) {
+            valid = false;
+            emailInput.style.borderColor = 'rgba(240, 120, 120, 0.6)';
+          }
+        }
+
         if (!valid) {
           if (statusBox) {
             statusBox.className = 'form-status error';
-            statusBox.textContent = 'Please complete all required fields and accept the privacy notice.';
+            statusBox.innerHTML = '<strong>Incomplete Details</strong><br>Please complete all required fields with a valid email and accept the confidentiality terms.';
+            statusBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+          return;
+        }
+
+        // Honeypot spam field check
+        const hpField = form.querySelector('input[name="hp_organization"]');
+        if (hpField && hpField.value.trim()) {
+          // Drop bot submission gracefully
+          if (statusBox) {
+            statusBox.className = 'form-status success';
+            statusBox.innerHTML = `<strong>${successHeading}</strong><br>${successBody}`;
           }
           return;
         }
@@ -448,19 +436,157 @@
           submitBtn.disabled = true;
           submitBtn.textContent = 'Transmitting Privately...';
         }
+        if (statusBox) {
+          statusBox.className = 'form-status';
+          statusBox.textContent = '';
+        }
 
-        setTimeout(() => {
+        // Compile payload
+        const payload = {
+          name: form.querySelector('#pd-name, #access-name, input[name="name"]')?.value?.trim() || '',
+          email: form.querySelector('#pd-email, #access-email, input[type="email"]')?.value?.trim() || '',
+          phone: form.querySelector('#pd-phone, #access-phone, input[type="tel"]')?.value?.trim() || '',
+          scalp_category: form.querySelector('#pd-category-input')?.value || '',
+          allocation: form.querySelector('#access-allocation')?.value || '',
+          location: form.querySelector('#access-location')?.value?.trim() || '',
+          message: form.querySelector('#pd-message, #access-notes, textarea')?.value?.trim() || '',
+          consent: !!form.querySelector('input[type="checkbox"][required]')?.checked,
+          hp_organization: hpField ? hpField.value.trim() : '',
+          submit_time: formLoadTime
+        };
+
+        const targetEmail = 'enquiries@velariprive.com';
+
+        // Direct email dispatch flow for Personal Discovery consultation form
+        if (form.id === 'personal-discovery-form') {
+          const directSubject = encodeURIComponent(`VELARI PRIVÉ Consultation Enquiry: ${payload.scalp_category || 'General'} - ${payload.name}`);
+          const directBody = encodeURIComponent(
+`Dear VELARI PRIVÉ Private Client Concierge,
+
+I am writing to submit a private consultation enquiry for ANAGÈNESE.
+
+--- CLIENT & CONSULTATION DETAILS ---
+Full Name: ${payload.name}
+Email Address: ${payload.email}
+Phone / WhatsApp: ${payload.phone}
+Selected Area of Focus: ${payload.scalp_category || 'Category 01: Dryness & Scalp Comfort'}
+
+--- SPECIFIC CONCERNS & NOTES ---
+${payload.message || 'No additional notes provided.'}
+
+---
+I understand that ANAGÈNESE is an ultra-concentrated cosmeceutical scalp elixir and look forward to receiving a personal introduction with utmost discretion.
+
+Kind regards,
+${payload.name}`
+          );
+          const directMailto = `mailto:${targetEmail}?subject=${directSubject}&body=${directBody}`;
+
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span>Redirecting to Email App...</span>';
+          }
+
+          // Asynchronous backup logging to server API
+          fetch('/api/enquiry', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(payload)
+          }).catch(() => {});
+
           if (statusBox) {
             statusBox.className = 'form-status success';
-            statusBox.innerHTML = `<strong>${successHeading}</strong><br>${successBody}`;
+            statusBox.innerHTML = 
+              `<strong>Launching Your Email Application...</strong><br>` +
+              `Your private consultation enquiry has been prepared and addressed to <strong>${targetEmail}</strong>.<br>` +
+              `<div style="margin-top: 1rem;"><a href="${directMailto}" class="btn btn-champagne" style="font-size: 0.76rem; padding: 0.65rem 1.4rem; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;">Click here if your email client didn't open automatically ↗</a></div>`;
           }
-          form.reset();
+
+          // Redirect to user's configured email application
+          window.location.href = directMailto;
+
+          setTimeout(() => {
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect width="20" height="16" x="2" y="4" rx="2"/>
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                </svg>
+                <span>SUBMIT & OPEN EMAIL APP</span>
+                <span class="btn-arrow" aria-hidden="true">↗</span>
+              `;
+            }
+          }, 2000);
+
+          window.velariTrackEvent(eventName, { status: 'redirected_to_email', category: payload.scalp_category });
+          return;
+        }
+
+        const fallbackSubject = encodeURIComponent(`VELARI PRIVÉ Consultation Enquiry: ${payload.scalp_category || payload.allocation || 'General'}`);
+        const fallbackBody = encodeURIComponent(
+`Dear VELARI PRIVÉ Concierge,
+
+Please receive my consultation enquiry:
+
+Full Name: ${payload.name}
+Direct Email: ${payload.email}
+Phone: ${payload.phone}
+${payload.location ? `Location: ${payload.location}\n` : ''}Selected Area: ${payload.scalp_category || payload.allocation}
+
+Notes:
+${payload.message || 'None provided'}
+`
+        );
+        const fallbackMailto = `mailto:${targetEmail}?subject=${fallbackSubject}&body=${fallbackBody}`;
+
+        try {
+          const response = await fetch('/api/enquiry', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify(payload)
+          });
+
+          const data = await response.json().catch(() => ({}));
+
+          if (response.ok && data.success) {
+            // SUCCESS CONFIRMED BY SERVER
+            if (statusBox) {
+              statusBox.className = 'form-status success';
+              statusBox.innerHTML = 
+                `<strong>${successHeading}</strong><br>` +
+                `${successBody}<br>` +
+                `<span style="font-size: 0.8rem; color: var(--color-champagne); margin-top: 0.6rem; display: block;">Routed to monitored inbox: ${targetEmail}</span>`;
+            }
+            form.reset();
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = 'Enquiry Lodged';
+            }
+            window.velariTrackEvent(eventName, { status: 'success', recipient: targetEmail });
+          } else {
+            // ERROR: PRESERVE USER-ENTERED FIELDS (DO NOT RESET FORM)
+            throw new Error(data.error || data.message || 'Server delivery unconfirmed');
+          }
+        } catch (error) {
+          console.warn('[Enquiry Submission Fallback]', error);
+          if (statusBox) {
+            statusBox.className = 'form-status error';
+            statusBox.innerHTML = 
+              `<strong>Delivery Notice</strong><br>` +
+              `We were unable to verify automatic server dispatch at this moment. <em>Your entered information has been preserved.</em><br>` +
+              `You may retry submission or click below to deliver your details directly via your email app to <strong>${targetEmail}</strong>:<br>` +
+              `<div style="margin-top: 1rem;"><a href="${fallbackMailto}" class="btn btn-champagne" style="font-size: 0.76rem; padding: 0.65rem 1.4rem; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;">Launch Email App ↗</a></div>`;
+          }
           if (submitBtn) {
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Transmitted Securely';
+            submitBtn.textContent = 'Retry Submission';
           }
-          window.velariTrackEvent(eventName, { status: 'submitted' });
-        }, 1100);
+          window.velariTrackEvent(eventName, { status: 'fallback_offered', error: error.message });
+        }
       });
     }
 
@@ -470,14 +596,6 @@
       'personal_discovery_enquiry_submitted',
       'Your Private Enquiry Has Been Lodged.',
       'Thank you. Your cosmetic preferences and details have been transmitted to the VELARI PRIVÉ Private Client Liaison. A personal introduction will follow with utmost discretion.'
-    );
-
-    setupEnquiryForm(
-      'private-discovery-form',
-      'discovery-form-status',
-      'private_discovery_enquiry_submitted',
-      'Your Private Discovery Has Been Lodged.',
-      'Thank you. Your cosmetic preferences and confidential details have been received by the VELARI PRIVÉ Private Client Liaison. A personal introduction will follow with utmost discretion.'
     );
 
     setupEnquiryForm(
@@ -733,7 +851,7 @@
           <div class="velari-lightbox-footer">
             <div class="velari-lightbox-caption" id="velari-lightbox-caption"></div>
             <div class="velari-lightbox-hints">
-              <span><kbd>ESC</kbd> Close</span>
+              <span><kbd>Click Image</kbd> / <kbd>ESC</kbd> Close</span>
               <span><kbd>←</kbd> <kbd>→</kbd> Navigate</span>
             </div>
           </div>
@@ -749,9 +867,20 @@
       const counterElem = document.getElementById('velari-lightbox-counter');
       const captionElem = document.getElementById('velari-lightbox-caption');
       const viewport = document.getElementById('velari-lightbox-viewport');
+      const stageElem = document.getElementById('velari-lightbox-stage');
 
       let currentIndex = 0;
       let lastFocusedElement = null;
+      let savedScrollY = 0;
+      let isTransitioning = false;
+
+      // Make the fullscreen image interactive with clear accessibility
+      if (imgElem) {
+        imgElem.setAttribute('tabindex', '0');
+        imgElem.setAttribute('role', 'button');
+        imgElem.setAttribute('aria-label', 'Fullscreen image. Click again or press Escape to close.');
+        imgElem.setAttribute('title', 'Click image to return to page');
+      }
 
       function updateLightboxView(index, smoothTransition = false) {
         currentIndex = (index + galleryItems.length) % galleryItems.length;
@@ -786,11 +915,21 @@
       }
 
       function openLightbox(index) {
+        if (lightbox.classList.contains('active') || isTransitioning) return;
+        isTransitioning = true;
+        savedScrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
         lastFocusedElement = document.activeElement;
+
         updateLightboxView(index, false);
+        lightbox.classList.remove('closing');
         lightbox.classList.add('active');
+        document.documentElement.style.overflow = 'hidden';
         document.body.style.overflow = 'hidden';
         lightbox.focus();
+
+        setTimeout(() => {
+          isTransitioning = false;
+        }, 320);
 
         window.velariTrackEvent('lightbox_opened', {
           image_src: galleryItems[currentIndex].src,
@@ -799,12 +938,35 @@
       }
 
       function closeLightbox() {
-        if (!lightbox.classList.contains('active')) return;
+        if (!lightbox.classList.contains('active') || isTransitioning) return;
+        isTransitioning = true;
+        lightbox.classList.add('closing');
         lightbox.classList.remove('active');
+        
+        // Restore normal page scrolling
+        document.documentElement.style.overflow = '';
         document.body.style.overflow = '';
-        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
-          lastFocusedElement.focus();
+
+        // Restore previous scroll position faithfully
+        if (typeof savedScrollY === 'number') {
+          window.scrollTo({
+            top: savedScrollY,
+            left: 0,
+            behavior: 'instant'
+          });
         }
+
+        setTimeout(() => {
+          lightbox.classList.remove('closing');
+          isTransitioning = false;
+          if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+            lastFocusedElement.focus();
+          }
+        }, 380);
+
+        window.velariTrackEvent('lightbox_closed', {
+          image_src: galleryItems[currentIndex]?.src
+        });
       }
 
       function showNext() {
@@ -818,8 +980,43 @@
       }
 
       // Close events
-      closeBtn.addEventListener('click', closeLightbox);
-      backdrop.addEventListener('click', closeLightbox);
+      closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeLightbox();
+      });
+
+      backdrop.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeLightbox();
+      });
+
+      // Click directly on the fullscreen image toggles / closes fullscreen mode
+      imgElem.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeLightbox();
+      });
+
+      // Keyboard toggle when image is focused (Enter or Space closes)
+      imgElem.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          closeLightbox();
+        }
+      });
+
+      // Click on stage around the image closes fullscreen mode
+      if (stageElem) {
+        stageElem.addEventListener('click', (e) => {
+          e.stopPropagation();
+          closeLightbox();
+        });
+      }
+
+      // Click on viewport background outside nav buttons closes fullscreen mode
+      viewport.addEventListener('click', (e) => {
+        if (e.target.closest('.velari-lightbox-nav')) return;
+        closeLightbox();
+      });
 
       // Nav click events
       nextBtn.addEventListener('click', (e) => {
@@ -829,13 +1026,6 @@
       prevBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         showPrev();
-      });
-
-      // Prevent closing when clicking on the image stage
-      viewport.addEventListener('click', (e) => {
-        if (e.target === viewport || e.target.closest('.velari-lightbox-stage')) {
-          if (e.target === viewport) closeLightbox();
-        }
       });
 
       // Keyboard Controls & Focus Trap
